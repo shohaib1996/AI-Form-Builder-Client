@@ -159,7 +159,7 @@ const Navbar = ({
 
   const navbarClass = isHeroSection
     ? "bg-transparent backdrop-blur-md"
-    : "bg-background";
+    : "bg-transparent backdrop-blur-md";
 
   return (
     <section className={`py-4 sticky top-0 z-50 border-b border-border ${navbarClass}`}>
