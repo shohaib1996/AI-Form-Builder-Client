@@ -162,7 +162,7 @@ const Navbar = ({
     : "bg-transparent backdrop-blur-md";
 
   return (
-    <section className={`py-4 sticky top-0 z-50 border-b border-border ${navbarClass}`}>
+    <section className={`py-4 sticky top-0 z-50 border-b border-border px-4 ${navbarClass}`}>
       <div className="container mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex relative z-60 w-full">
