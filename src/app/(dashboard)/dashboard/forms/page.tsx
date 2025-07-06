@@ -14,7 +14,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
-import { Sparkles, Copy, Eye, Trash } from "lucide-react";
+import { Sparkles, Copy, Eye, Trash, Link2 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   AlertDialog,
@@ -27,8 +27,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 const MyForms = () => {
+    const router = useRouter();
   const queryClient = useQueryClient();
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -83,6 +85,11 @@ const MyForms = () => {
     navigator.clipboard.writeText(id);
     toast.success("Form ID copied!");
   };
+  const handleCopyLink = (id: string) => {
+    const formUrl = `${window.location.origin}/forms/${id}`;
+    navigator.clipboard.writeText(formUrl);
+    toast.success("Form link copied!");
+  };
 
   if (isLoading) {
     return (
@@ -133,7 +140,10 @@ const MyForms = () => {
                   </Button>
                 </TableCell>
                 <TableCell>{form.title}</TableCell>
-                <TableCell className="truncate max-w-xs" title={form.description}>
+                <TableCell
+                  className="truncate max-w-xs"
+                  title={form.description}
+                >
                   {form.description}
                 </TableCell>
                 <TableCell className="text-center">
@@ -154,6 +164,23 @@ const MyForms = () => {
                       <Eye className="w-4 h-4" />
                     </Button>
                   </Link>
+                  <Button
+                    className="cursor-pointer"
+                    size="icon"
+                    variant="outline"
+                    onClick={() => handleCopyLink(form._id)}
+                    title="Copy Form Link"
+                  >
+                    <Link2 className="w-4 h-4 text-muted-foreground" />
+                  </Button>
+                  <Button
+                    className="cursor-pointer"
+                    variant="outline"
+                    title="View Responses"
+                    onClick={() => router.push(`/dashboard/responses/${form._id}`) }
+                  >
+                    Responses
+                  </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
@@ -171,17 +198,16 @@ const MyForms = () => {
                           Are you sure you want to delete this form?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete your form and all its data.
+                          This action cannot be undone. This will permanently
+                          delete your form and all its data.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel
-                          onClick={() => setDeleteId(null)}
-                        >
+                        <AlertDialogCancel onClick={() => setDeleteId(null)}>
                           Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
-                        className="bg-red-500 text-white hover:bg-red-600"
+                          className="bg-red-500 text-white hover:bg-red-600"
                           onClick={() => {
                             if (deleteId) deleteMutation.mutate(deleteId);
                           }}

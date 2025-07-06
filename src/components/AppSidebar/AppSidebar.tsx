@@ -33,11 +33,6 @@ const items = [
     icon: FileText,
   },
   {
-    title: "Responses",
-    url: "/dashboard/responses",
-    icon: BarChart,
-  },
-  {
     title: "Payments",
     url: "/dashboard/payments",
     icon: CreditCard,
