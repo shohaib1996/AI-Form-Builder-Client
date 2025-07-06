@@ -34,6 +34,8 @@ export default function FormPage() {
 
   const formData = data.data;
 
+  console.log(formData._id)
+
   const handleFormSubmit = (formValues: Record<string, any>) => {
     console.log("Form submission data:", formValues);
     // You can send the submission to your backend here
@@ -44,7 +46,7 @@ export default function FormPage() {
       <div className="p-4 rounded-lg bg-white shadow-md max-w-2xl w-full">
         <h1 className="text-2xl font-bold mb-2">{formData.title}</h1>
         <p className="text-gray-600 mb-4">{formData.description}</p>
-        <DynamicForm fields={formData.fields.fields} onSubmit={handleFormSubmit} />
+        <DynamicForm fields={formData.fields.fields} formId={formData._id} />
       </div>
     </div>
   );
