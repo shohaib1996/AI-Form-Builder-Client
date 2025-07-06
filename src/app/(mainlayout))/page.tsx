@@ -3,6 +3,8 @@ import { CTASection } from "@/components/Home/CTASection";
 import { FAQSection } from "@/components/Home/FAQSection";
 import { FeaturesSection } from "@/components/Home/FeaturesSection";
 import { HeroSection } from "@/components/Home/HeroSection";
+
+
 import { TestimonialsSection } from "@/components/Home/TestimonialsSection";
 import { TrustIndicators } from "@/components/Home/TrustIndicators";
 import { UseCasesSection } from "@/components/Home/UseCasesSection";

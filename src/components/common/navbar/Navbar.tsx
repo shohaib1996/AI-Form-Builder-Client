@@ -28,6 +28,16 @@ import {
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { useRouter } from "next/navigation";
+import { useUser } from "@/auth/authProvider";
 
 interface MenuItem {
   title: string;
@@ -142,6 +152,10 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const [isHeroSection, setIsHeroSection] = useState(false);
+  const { user, loading } = useUser(); // Custom hook to get user info
+  const router = useRouter();
+
+  console.log("User Info:", user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -167,18 +181,18 @@ const Navbar = ({
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex relative z-60 w-full">
           <div className="flex items-center gap-6">
-           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="flex items-center space-x-2">
-              <motion.div
-                className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Sparkles className="w-5 h-5 text-white" />
-              </motion.div>
-              <span className="text-xl font-bold">FormAI</span>
-            </div>
-          </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <div className="flex items-center space-x-2">
+                <motion.div
+                  className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Sparkles className="w-5 h-5 text-white" />
+                </motion.div>
+                <span className="text-xl font-bold">FormAI</span>
+              </div>
+            </motion.div>
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -187,13 +201,54 @@ const Navbar = ({
               </NavigationMenu>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+          <div className="flex gap-2 items-center">
+            {loading ? (
+              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer">
+                    <AvatarImage src={user.user.photo || "https://github.com/shadcn.png"} />
+                    <AvatarFallback>
+                      {user.user.name
+                        ? user.user.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()
+                        : "US"}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <div className="px-3 py-2">
+                    <div className="font-semibold">{user.user.name}</div>
+                    <div className="text-xs text-muted-foreground">{user.user.email}</div>
+                  </div>
+                  <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                  className="cursor-pointer text-red-500 hover:text-red-600 dark:hover:text-red-400"
+                    onClick={() => {
+                      localStorage.removeItem("access_token");
+                      router.push("/signin");
+                    }}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="sm">
+                  <a href={auth.login.url}>{auth.login.title}</a>
+                </Button>
+                <Button asChild size="sm">
+                  <a href={auth.signup.url}>{auth.signup.title}</a>
+                </Button>
+              </>
+            )}
             <ModeToggle />
           </div>
         </nav>
@@ -228,12 +283,52 @@ const Navbar = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
-                    </Button>
-                    <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
-                    </Button>
+                    {loading ? (
+                      <div className="w-12 h-12 rounded-full bg-muted animate-pulse mx-auto" />
+                    ) : user ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Avatar className="cursor-pointer mx-auto">
+                            <AvatarImage src={user.user.photo || "https://github.com/shadcn.png"} />
+                            <AvatarFallback>
+                              {user.user.name
+                                ? user.user.name
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()
+                                : "US"}
+                            </AvatarFallback>
+                          </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <div className="px-3 py-2">
+                            <div className="font-semibold">{user.user.name}</div>
+                            <div className="text-xs text-muted-foreground">{user.user.email}</div>
+                          </div>
+                          <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                            Dashboard
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              localStorage.removeItem("access_token");
+                              router.push("/signin");
+                            }}
+                          >
+                            Logout
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <>
+                        <Button asChild variant="outline">
+                          <a href={auth.login.url}>{auth.login.title}</a>
+                        </Button>
+                        <Button asChild>
+                          <a href={auth.signup.url}>{auth.signup.title}</a>
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>

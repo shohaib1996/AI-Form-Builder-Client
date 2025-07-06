@@ -12,7 +12,11 @@ interface UserInfo {
    
 }
 
-function decodeJWT(token: string): UserInfo | null {
+interface DecodedJWT {
+    user: UserInfo;
+}
+
+function decodeJWT(token: string): DecodedJWT | null {
     try {
         const payload = token.split('.')[1];
         const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
@@ -23,7 +27,7 @@ function decodeJWT(token: string): UserInfo | null {
 }
 
 export function useUser() {
-    const [user, setUser] = useState<UserInfo | null>(null);
+    const [user, setUser] = useState<DecodedJWT | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
