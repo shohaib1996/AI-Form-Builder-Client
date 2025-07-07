@@ -25,7 +25,14 @@ export default function PricingPage() {
   const checkoutMutation = useMutation({
     mutationFn: async (planType: string) => {
       const response = await api.post<CheckoutResponse>("/payment/checkout", {
-        plan: planType,
+         items: [
+            {
+                name: "AI FORM BUILDER PREMIUM",
+                amount: 5,
+                currency: "usd",
+                quantity: 1
+            }
+        ]
       })
       return response.data
     },
