@@ -1,6 +1,6 @@
 "use client"
 
-import { useUser } from "@/auth/authProvider"
+import { useAuth } from "@/auth/authContext"
 import FormsPerMonthChart from "@/components/dashboard/FormsPerMonthChart"
 import FormStatusChart from "@/components/dashboard/FormStatusChart"
 import ResponsesByFormChart from "@/components/dashboard/ResponsesByFormChart"
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 const Dashboard = () => {
-  const { user, loading } = useUser()
+  const { user, loading } = useAuth()
   const router = useRouter() // Move this to the top, before any conditional returns
   
   useEffect(() => {

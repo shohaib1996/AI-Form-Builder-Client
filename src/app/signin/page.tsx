@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Chrome, ArrowLeft, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -35,6 +35,24 @@ export default function SignInPage() {
       password: "",
     },
   })
+
+  // Handle token from URL parameters (for Google OAuth redirect)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token')
+    
+    if (token) {
+      // Store the token in localStorage
+      localStorage.setItem('authToken', token)
+      
+      // Clean up the URL by removing the token parameter
+      window.history.replaceState({}, document.title, window.location.pathname)
+      
+      // Show success message and redirect
+      toast.success("Successfully signed in with Google! Welcome back.")
+      router.push("/")
+    }
+  }, [router])
 
   const signinMutation = useMutation({
     mutationFn: (data: SigninForm) =>
@@ -83,7 +101,13 @@ export default function SignInPage() {
     tap: {
       scale: 0.98,
     },
-  }
+  } 
+
+const handleGoogleLogin = () => {
+  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
+}
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-indigo-900 dark:via-purple-900 dark:to-black flex items-center justify-center p-4 relative">
@@ -189,7 +213,7 @@ export default function SignInPage() {
                 <Button
                   variant="outline"
                   className="w-full mt-4 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 transform hover:scale-105 bg-transparent"
-                  onClick={() => console.log("Google signin clicked")}
+                  onClick={handleGoogleLogin}
                 >
                   <Chrome className="mr-2 h-4 w-4" />
                   Continue with Google
@@ -214,4 +238,3 @@ export default function SignInPage() {
     </div>
   )
 }
-

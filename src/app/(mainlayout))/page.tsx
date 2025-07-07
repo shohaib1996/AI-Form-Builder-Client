@@ -11,6 +11,7 @@ import { UseCasesSection } from "@/components/Home/UseCasesSection";
 import { WhoIsThisForSection } from "@/components/Home/WhoIsThisForSection";
 
 export default function Home() {
+  
   return (
     <div>
       {/* <Navbar /> */}

@@ -53,7 +53,7 @@ export function HeroSection() {
   const [generatedForm, setGeneratedForm] = useState<GeneratedFormType | null>(
     null
   );
-  const [selectedTemplate, setSelectedTemplate] = useState(1);
+  // const [selectedTemplate, setSelectedTemplate] = useState(1);
 
   const fullPlaceholder =
     "Describe your form... e.g., 'Create a job application form!'";
@@ -276,8 +276,8 @@ export function HeroSection() {
         isOpen={isFormDialogOpen}
         setIsOpen={setIsFormDialogOpen}
         generatedForm={generatedForm}
-        selectedTemplate={selectedTemplate}
-        setSelectedTemplate={setSelectedTemplate}
+        // selectedTemplate={selectedTemplate}
+        // setSelectedTemplate={setSelectedTemplate}
         templateNames={templateNames}
         templateStyles={templateStyles}
         getFormUrl={getFormUrl}

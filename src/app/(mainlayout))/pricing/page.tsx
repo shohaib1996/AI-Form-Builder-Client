@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import api from "@/lib/axios"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { useUser } from "@/auth/authProvider"
+import { useAuth } from "@/auth/authContext"
 
 interface CheckoutResponse {
   success: boolean
@@ -20,7 +20,7 @@ interface CheckoutResponse {
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const router = useRouter()
-  const {user} = useUser()
+  const {user} = useAuth()
 
   const checkoutMutation = useMutation({
     mutationFn: async (planType: string) => {

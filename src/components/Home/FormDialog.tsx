@@ -1,7 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import DynamicForm from "@/components/DynamicForm/DynamicForm";
@@ -23,8 +20,8 @@ interface FormDialogProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   generatedForm: GeneratedFormType | null;
-  selectedTemplate: number;
-  setSelectedTemplate: (template: number) => void;
+  selectedTemplate?: number;
+  setSelectedTemplate?: (template: number) => void;
   templateNames: string[];
   templateStyles: Record<number, string>;
   getFormUrl: (id: string) => string;
@@ -46,10 +43,6 @@ export function FormDialog({
   isOpen,
   setIsOpen,
   generatedForm,
-  selectedTemplate,
-  setSelectedTemplate,
-  templateNames,
-  templateStyles,
   getFormUrl,
   mutationStatus,
   mutationError,
@@ -74,7 +67,7 @@ export function FormDialog({
           </div>
         ) : generatedForm ? (
           <div className="space-y-4">
-            <div className="flex justify-between items-center flex-wrap gap-2">
+            {/* <div className="flex justify-between items-center flex-wrap gap-2">
               <div className="flex flex-wrap gap-2">
                 {templateNames.map((name, index) => (
                   <Button
@@ -89,18 +82,20 @@ export function FormDialog({
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             <div className="text-sm text-muted-foreground">
-              <strong>Share this form:</strong>{" "}
-              <Link
-                href={formUrl}
-                className="text-blue-500 underline break-all font-bold"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Go to Form
-              </Link>
+              <div className="flex items-center">
+                <strong className="text-2xl mr-2">Share this form:</strong>{" "}
+                <Link
+                  href={formUrl}
+                  className="text-blue-500 break-all font-bold text-2xl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Go to Form
+                </Link>
+              </div>
               <div className="flex gap-2 mt-2">
                 <FacebookShareButton url={formUrl}>
                   <FacebookIcon size={32} round />
@@ -114,7 +109,12 @@ export function FormDialog({
                 <PinterestShareButton url={formUrl} media={formUrl}>
                   <PinterestIcon size={32} round />
                 </PinterestShareButton>
-                <Button className="cursor-pointer" variant="outline" size="icon" onClick={copyToClipboard}>
+                <Button
+                  className="cursor-pointer"
+                  variant="outline"
+                  size="icon"
+                  onClick={copyToClipboard}
+                >
                   <Copy className="h-4 w-4 " />
                 </Button>
               </div>
@@ -122,9 +122,7 @@ export function FormDialog({
 
             <div>
               <h2 className="text-2xl font-bold mb-4">{generatedForm.title}</h2>
-              <div
-                className={`p-4 rounded-lg ${templateStyles[selectedTemplate]} w-full`}
-              >
+              <div className={`p-4 rounded-lg w-full`}>
                 {generatedForm.fields?.fields ? (
                   <DynamicForm
                     fields={generatedForm.fields.fields}

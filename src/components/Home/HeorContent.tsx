@@ -86,7 +86,7 @@ export function HeroContent({
           <motion.div {...scaleOnHover}>
             <Button
               size="lg"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 cursor-pointer"
+              className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 cursor-pointer"
               onClick={() => setIsTitleDialogOpen(true)}
             >
               <Sparkles className="w-5 h-5 mr-2" />

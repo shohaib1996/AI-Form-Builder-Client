@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Chrome, ArrowLeft, Eye, EyeOff } from "lucide-react"
+import { ArrowLeft, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle"
 import { useMutation } from "@tanstack/react-query"
@@ -200,14 +200,14 @@ export default function SignUpPage() {
                     </span>
                   </div>
                 </div>
-                <Button
+                {/* <Button
                   variant="outline"
                   className="w-full mt-4 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 transform hover:scale-105 bg-transparent"
                   onClick={() => console.log("Google signup clicked")}
                 >
                   <Chrome className="mr-2 h-4 w-4" />
                   Continue with Google
-                </Button>
+                </Button> */}
               </div>
 
               <div className="mt-6 text-center">

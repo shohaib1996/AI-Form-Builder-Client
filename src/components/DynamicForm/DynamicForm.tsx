@@ -134,7 +134,7 @@ export default function DynamicForm({ fields, formId }: DynamicFormProps) {
             control={form.control}
             name={field.name}
             render={({ field: rhfField }) => (
-              <FormItem>
+              <FormItem className="">
                 <FormLabel>
                   {field.label}{" "}
                   {field.required && <span className="text-red-500">*</span>}

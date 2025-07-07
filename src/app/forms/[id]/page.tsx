@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import DynamicForm from "@/components/DynamicForm/DynamicForm"
 import { notFound } from "next/navigation"
 import api from "@/lib/axios"
@@ -9,6 +9,7 @@ import { motion } from "framer-motion"
 import { FileX, Lock, AlertCircle } from "lucide-react"
 
 export default function FormPage() {
+  const router = useRouter()
   const params = useParams()
   const id = Array.isArray(params.id) ? params.id[0] : params.id
 
@@ -110,7 +111,7 @@ export default function FormPage() {
               className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.history.back()}
+              onClick={() => router.push('/')}
             >
               Go Back
             </motion.button>
