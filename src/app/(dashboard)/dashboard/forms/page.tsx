@@ -148,6 +148,7 @@ const MyForms = () => {
                 </TableCell>
                 <TableCell className="text-center">
                   <Switch
+                  className="cursor-pointer"
                     checked={form.isPublished}
                     onCheckedChange={(checked) =>
                       publishMutation.mutate({
@@ -160,7 +161,7 @@ const MyForms = () => {
                 <TableCell>{form.templateId}</TableCell>
                 <TableCell className="flex gap-2">
                   <Link href={`/forms/${form._id}`}>
-                    <Button size="icon" variant="outline" title="View">
+                    <Button size="icon" variant="outline" title="View" className="cursor-pointer">
                       <Eye className="w-4 h-4" />
                     </Button>
                   </Link>

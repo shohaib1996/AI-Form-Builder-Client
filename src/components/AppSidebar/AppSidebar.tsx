@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ModeToggle/ModeToggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import Link from "next/link";
 
 const items = [
   {
@@ -32,11 +33,11 @@ const items = [
     url: "/dashboard/forms",
     icon: FileText,
   },
-  {
-    title: "Payments",
-    url: "/dashboard/payments",
-    icon: CreditCard,
-  },
+//   {
+//     title: "Payments",
+//     url: "/dashboard/payments",
+//     icon: CreditCard,
+//   },
   {
     title: "Subscriptions & Billing",
     url: "/dashboard/billing",
@@ -80,16 +81,18 @@ export function AppSidebar() {
       <div className="hidden md:block">
         <Sidebar>
           <SidebarHeader>
-            <div className="flex items-center space-x-2">
-              <motion.div
-                className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Sparkles className="w-5 h-5 text-white" />
-              </motion.div>
-              <span className="text-xl font-bold">FormAI</span>
-            </div>
+            <Link href="/">
+              <div className="flex items-center space-x-2 cursor-pointer">
+                <motion.div
+                  className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Sparkles className="w-5 h-5 text-white" />
+                </motion.div>
+                <span className="text-xl font-bold">FormAI</span>
+              </div>
+            </Link>
           </SidebarHeader>
           <AppSidebarContent />
           <SidebarFooter>
