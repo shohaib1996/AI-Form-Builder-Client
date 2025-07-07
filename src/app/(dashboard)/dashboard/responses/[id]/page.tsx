@@ -8,7 +8,7 @@ const ResponsesPage = async({ params }: {params: Promise<{ id: string }>}) => {
   const { id } = await params
 
   return (
-    <div>
+    <div className='w-full'>
       <ResponseTable id={id} />
     </div>
   )

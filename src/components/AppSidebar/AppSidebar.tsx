@@ -44,7 +44,7 @@ const items = [
   },
   {
     title: "Profile & Settings",
-    url: "/dashboard/settings",
+    url: "/dashboard/profile",
     icon: UserCog,
   },
 ];
