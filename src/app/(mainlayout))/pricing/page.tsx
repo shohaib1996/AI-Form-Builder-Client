@@ -23,7 +23,7 @@ export default function PricingPage() {
   const {user} = useAuth()
 
   const checkoutMutation = useMutation({
-    mutationFn: async (planType: string) => {
+    mutationFn: async () => {
       const response = await api.post<CheckoutResponse>("/payment/checkout", {
          items: [
             {
@@ -52,7 +52,7 @@ export default function PricingPage() {
 
   const handlePayNow = (planType: string) => {
     setSelectedPlan(planType)
-    checkoutMutation.mutate(planType)
+    checkoutMutation.mutate()
   }
 
   const handleGetStarted = () => {
