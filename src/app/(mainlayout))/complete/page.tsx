@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
@@ -35,7 +35,7 @@ interface PaymentCompleteResponse {
   }
 }
 
-export default function CompletePage() {
+function CompletePageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const receiptRef = useRef<HTMLDivElement>(null)
@@ -47,7 +47,6 @@ export default function CompletePage() {
     queryKey: ["payment-complete", sessionId],
     queryFn: async () => {
       if (!sessionId) throw new Error("No session ID provided")
-
       const response = await api.get<PaymentCompleteResponse>(`/payment/complete?session_id=${sessionId}`)
       return response.data
     },
@@ -79,7 +78,6 @@ export default function CompletePage() {
     setIsDownloading(true)
 
     try {
-      // Use browser's print functionality to generate PDF
       const printWindow = window.open("", "_blank")
       if (!printWindow) {
         throw new Error("Popup blocked")
@@ -368,12 +366,10 @@ export default function CompletePage() {
             </div>
 
             <script>
-              // Auto-focus the print dialog after a short delay
               setTimeout(() => {
                 window.print();
               }, 500);
               
-              // Close window after printing (optional)
               window.addEventListener('afterprint', () => {
                 setTimeout(() => {
                   window.close();
@@ -396,7 +392,6 @@ export default function CompletePage() {
     }
   }
 
-  // Redirect if no session ID
   useEffect(() => {
     if (!sessionId) {
       router.push("/pricing")
@@ -449,12 +444,10 @@ export default function CompletePage() {
               >
                 <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
               </motion.div>
-
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">Payment Verification Failed</h1>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We couldn't verify your payment. Please contact support if you believe this is an error.
+                We couldn&apos;t verify your payment. Please contact support if you believe this is an error.
               </p>
-
               <Button onClick={() => router.push("/pricing")} variant="outline" className="w-full">
                 Back to Pricing
               </Button>
@@ -470,7 +463,6 @@ export default function CompletePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-green-900/10 dark:to-gray-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Success Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -485,7 +477,6 @@ export default function CompletePage() {
           >
             <CheckCircle className="h-10 w-10 text-white" />
           </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -494,7 +485,6 @@ export default function CompletePage() {
           >
             Payment Successful!
           </motion.h1>
-
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -503,7 +493,6 @@ export default function CompletePage() {
           >
             {data.message}
           </motion.p>
-
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -515,8 +504,6 @@ export default function CompletePage() {
             </Badge>
           </motion.div>
         </motion.div>
-
-        {/* Receipt Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -536,17 +523,16 @@ export default function CompletePage() {
                 </div>
               </div>
             </CardHeader>
-
             <CardContent className="p-8">
               <div className="grid md:grid-cols-2 gap-8">
-                {/* Subscription Details */}
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                       <User className="h-5 w-5" />
-                      Subscription Details
-                    </h3>
+                     
 
+System: Subscription Details
+                    </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Plan:</span>
@@ -554,7 +540,6 @@ export default function CompletePage() {
                           {getPlanDisplayName(subscription.planName)}
                         </span>
                       </div>
-
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Status:</span>
                         <Badge
@@ -564,7 +549,6 @@ export default function CompletePage() {
                           {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
                         </Badge>
                       </div>
-
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Amount:</span>
                         <span className="font-bold text-xl text-gray-900 dark:text-gray-100">
@@ -573,21 +557,17 @@ export default function CompletePage() {
                       </div>
                     </div>
                   </div>
-
                   <Separator />
-
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                       <CreditCard className="h-5 w-5" />
                       Payment Information
                     </h3>
-
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Payment Method:</span>
                         <span className="text-gray-900 dark:text-gray-100">Stripe</span>
                       </div>
-
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Transaction ID:</span>
                         <span className="font-mono text-sm text-gray-900 dark:text-gray-100">
@@ -597,28 +577,22 @@ export default function CompletePage() {
                     </div>
                   </div>
                 </div>
-
-                {/* Billing Period */}
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                       <Calendar className="h-5 w-5" />
                       Billing Period
                     </h3>
-
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Started:</span>
                         <span className="text-gray-900 dark:text-gray-100">{formatDate(subscription.startedAt)}</span>
                       </div>
-
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 dark:text-gray-400">Ends:</span>
                         <span className="text-gray-900 dark:text-gray-100">{formatDate(subscription.endsAt)}</span>
                       </div>
-
                       <Separator />
-
                       <div className="text-center">
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                           Your subscription will auto-renew on{" "}
@@ -629,11 +603,8 @@ export default function CompletePage() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Plan Features */}
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">What's Included</h3>
-
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">What&apos;s Included</h3>
                     <div className="space-y-2">
                       {subscription.planName.toLowerCase() === "premium" ? (
                         <>
@@ -674,9 +645,7 @@ export default function CompletePage() {
                   </div>
                 </div>
               </div>
-
               <Separator className="my-8" />
-
               <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                 <p>Thank you for your business! If you have any questions, please contact our support team.</p>
                 <p className="mt-1">Generated on {formatDate(new Date().toISOString())}</p>
@@ -684,8 +653,6 @@ export default function CompletePage() {
             </CardContent>
           </Card>
         </motion.div>
-
-        {/* Action Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -710,7 +677,6 @@ export default function CompletePage() {
               </div>
             )}
           </Button>
-
           <Button
             onClick={() => router.push("/dashboard")}
             variant="outline"
@@ -721,8 +687,6 @@ export default function CompletePage() {
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </motion.div>
-
-        {/* Success Message */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -737,3 +701,34 @@ export default function CompletePage() {
     </div>
   )
 }
+
+export default function CompletePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-green-900/10 dark:to-gray-900">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-center p-8"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              className="inline-block mb-4"
+            >
+              <Loader2 className="h-12 w-12 text-green-600 dark:text-green-400" />
+            </motion.div>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Loading...</h2>
+            <p className="text-gray-600 dark:text-gray-400">Please wait while we load your payment details...</p>
+          </motion.div>
+        </div>
+      }
+    >
+      <CompletePageContent />
+    </Suspense>
+  )
+}
+
+export const dynamic = "force-dynamic"

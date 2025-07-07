@@ -15,29 +15,31 @@ import { motion } from "framer-motion";
 import {
   Sparkles,
   FileText,
-  BarChart,
-  CreditCard,
+  LayoutDashboard,
   Receipt,
   UserCog,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ModeToggle/ModeToggle";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
 import Link from "next/link";
 
 const items = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+  },
   {
     title: "My Forms",
     url: "/dashboard/forms",
     icon: FileText,
   },
-//   {
-//     title: "Payments",
-//     url: "/dashboard/payments",
-//     icon: CreditCard,
-//   },
+  //   {
+  //     title: "Payments",
+  //     url: "/dashboard/payments",
+  //     icon: CreditCard,
+  //   },
   {
     title: "Subscriptions & Billing",
     url: "/dashboard/billing",

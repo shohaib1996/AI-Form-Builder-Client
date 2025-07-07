@@ -141,10 +141,10 @@ const Navbar = ({
       title: "Pricing",
       url: "/pricing",
     },
-    {
-      title: "Blog",
-      url: "#",
-    },
+    // {
+    //   title: "Blog",
+    //   url: "#",
+    // },
   ],
   auth = {
     login: { title: "Login", url: "/signin" },

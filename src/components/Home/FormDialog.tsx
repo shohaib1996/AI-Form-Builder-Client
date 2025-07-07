@@ -1,8 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -53,7 +51,6 @@ export function FormDialog({
   templateNames,
   templateStyles,
   getFormUrl,
-  handleFormSubmit,
   mutationStatus,
   mutationError,
 }: FormDialogProps) {
@@ -131,7 +128,7 @@ export function FormDialog({
                 {generatedForm.fields?.fields ? (
                   <DynamicForm
                     fields={generatedForm.fields.fields}
-                    onSubmit={handleFormSubmit}
+                    formId={generatedForm._id}
                   />
                 ) : (
                   <p>No fields found for this form.</p>

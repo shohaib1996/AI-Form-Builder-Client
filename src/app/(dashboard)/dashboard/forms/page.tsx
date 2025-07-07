@@ -28,6 +28,31 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
+export interface FieldOption {
+  name: string;
+  label: string;
+  type: 'text' | 'email' | 'number' | 'select'| 'radio' | 'checkbox';
+  required: boolean;
+  options?: string[];
+}
+
+export interface Fields {
+  fields: FieldOption[];
+}
+
+export interface Form {
+  _id: string;
+  userId: string;
+  title: string;
+  description: string;
+  fields: Fields;
+  isPublished: boolean;
+  templateId: string;
+  createdAt: string; // or Date if you want to parse
+  updatedAt: string; // or Date if you want to parse
+  __v: number;
+}
+
 
 const MyForms = () => {
     const router = useRouter();
@@ -125,7 +150,7 @@ const MyForms = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.map((form: any) => (
+            {data?.map((form: Form) => (
               <TableRow key={form._id}>
                 <TableCell className="flex items-center gap-2">
                   <span>{form._id}</span>

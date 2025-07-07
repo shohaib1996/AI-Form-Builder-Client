@@ -3,12 +3,13 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { useMutation } from "@tanstack/react-query"
-import { Check, Crown, Zap, Palette, BarChart3, Shield, Loader2, Currency } from "lucide-react"
+import { Check, Crown, Zap, Palette, BarChart3, Shield, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import api from "@/lib/axios"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 import { useUser } from "@/auth/authProvider"
 
 interface CheckoutResponse {
@@ -18,19 +19,13 @@ interface CheckoutResponse {
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
+  const router = useRouter()
   const {user} = useUser()
 
   const checkoutMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (planType: string) => {
       const response = await api.post<CheckoutResponse>("/payment/checkout", {
-        items: [
-            {
-                name: "AI FORM BUILDER PREMIUM",
-                amount: 5,
-                currency: "usd",
-                quantity: 1
-            }
-        ]
+        plan: planType,
       })
       return response.data
     },
@@ -49,12 +44,17 @@ export default function PricingPage() {
   })
 
   const handlePayNow = (planType: string) => {
-    if(!user){
-        toast.error("Please signin first")
-        return
-    } 
     setSelectedPlan(planType)
-    checkoutMutation.mutate()
+    checkoutMutation.mutate(planType)
+  }
+
+  const handleGetStarted = () => {
+ 
+    if (!user) {
+      router.push("/signin")
+    } else {
+      router.push("/dashboard")
+    }
   }
 
   const plans = [
@@ -80,7 +80,7 @@ export default function PricingPage() {
     {
       id: "premium",
       name: "Premium",
-      price: "$5",
+      price: "$29",
       priceSubtext: "/month",
       description: "Advanced features for power users and teams",
       features: [
@@ -251,8 +251,8 @@ export default function PricingPage() {
                   <CardFooter className="pt-6">
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
                       <Button
-                        onClick={() => plan.id === "premium" && handlePayNow(plan.id)}
-                        disabled={isLoading || (plan.id === "premium" && checkoutMutation.isPending)}
+                        onClick={() => (plan.id === "premium" ? handlePayNow(plan.id) : handleGetStarted())}
+                        disabled={plan.id === "premium" ? isLoading || checkoutMutation.isPending : false}
                         className={`w-full py-3 text-base font-medium transition-all duration-200 ${
                           plan.id === "premium"
                             ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl"

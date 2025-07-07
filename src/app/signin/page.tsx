@@ -14,7 +14,6 @@ import Link from "next/link"
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import api from "@/lib/axios"
@@ -199,7 +198,7 @@ export default function SignInPage() {
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Don't have an account?{" "}
+                  Don&apos;t have an account?{" "}
                   <Link
                     href="/signup"
                     className="font-medium text-purple-600 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300 transition-colors"
