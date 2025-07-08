@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Globe } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/auth/authContext";
+import { useRouter } from "next/navigation";
 
 interface HeroContentProps {
   prompt: string;
@@ -32,6 +34,15 @@ export function HeroContent({
   animatedPlaceholder,
   setIsTitleDialogOpen,
 }: HeroContentProps) {
+  const router = useRouter();
+  const { user } = useAuth();
+  const handleGenerateForm = () => {
+    if (!user) {
+      router.push("/signin");
+      return;
+    }
+    setIsTitleDialogOpen(true);
+  };
   return (
     <motion.div
       className="text-center space-y-8 py-24"
@@ -82,13 +93,13 @@ export function HeroContent({
               onChange={(e) => setPrompt(e.target.value)}
               className="pl-10 border-0 bg-background resize-none h-12 overflow-y-auto"
               rows={1}
-              style={{ 
-                width: '100%', 
-                minWidth: '0',
-                maxWidth: '100%',
+              style={{
+                width: "100%",
+                minWidth: "0",
+                maxWidth: "100%",
                 flexShrink: 1,
                 flexGrow: 1,
-                boxSizing: 'border-box'
+                boxSizing: "border-box",
               }}
             />
           </div>
@@ -96,7 +107,7 @@ export function HeroContent({
             <Button
               size="lg"
               className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 cursor-pointer whitespace-nowrap"
-              onClick={() => setIsTitleDialogOpen(true)}
+              onClick={handleGenerateForm}
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Generate Form
