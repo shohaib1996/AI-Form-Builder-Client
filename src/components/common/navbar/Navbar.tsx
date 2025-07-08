@@ -235,7 +235,7 @@ const Navbar = ({
                     {loading ? (
                       <div className="w-12 h-12 rounded-full bg-muted animate-pulse mx-auto" />
                     ) : user ? (
-                      <div className="flex flex-col items-center">
+                      <div className="flex flex-col items-center space-y-3">
                         <Avatar className="mb-2">
                           <AvatarImage src={user.user.photo || "https://github.com/shadcn.png"} />
                           <AvatarFallback>

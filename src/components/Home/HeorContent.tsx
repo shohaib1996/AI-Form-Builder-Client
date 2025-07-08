@@ -80,7 +80,7 @@ export function HeroContent({
               placeholder={animatedPlaceholder}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="pl-10 border-0 bg-background"
+              className="w-full pl-10 border-0 bg-background h-20 resize-none overflow-y-auto"
             />
           </div>
           <motion.div {...scaleOnHover}>
