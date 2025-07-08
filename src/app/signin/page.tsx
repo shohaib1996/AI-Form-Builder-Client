@@ -30,6 +30,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
+import { useAuth } from "@/auth/authContext";
 
 const signinSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -39,6 +40,7 @@ const signinSchema = z.object({
 type SigninForm = z.infer<typeof signinSchema>;
 
 export default function SignInPage() {
+  const { setUserFromToken } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const form = useForm<SigninForm>({
@@ -49,30 +51,30 @@ export default function SignInPage() {
     },
   });
 
-  // Handle token from URL parameters (for Google OAuth redirect)
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
+  // // Handle token from URL parameters (for Google OAuth redirect)
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const token = urlParams.get("token");
 
-    if (token) {
-      // Store the token in localStorage
-      localStorage.setItem("authToken", token);
+  //   if (token) {
+  //     // Store the token in localStorage
+  //     localStorage.setItem("access_token", token);
 
-      // Clean up the URL by removing the token parameter
-      window.history.replaceState({}, document.title, window.location.pathname);
+  //     // Clean up the URL by removing the token parameter
+  //     window.history.replaceState({}, document.title, window.location.pathname);
 
-      // Show success message and redirect
-      toast.success("Successfully signed in with Google! Welcome back.");
-      router.push("/");
-    }
-  }, [router]);
+  //     // Show success message and redirect
+  //     toast.success("Successfully signed in with Google! Welcome back.");
+  //     router.push("/");
+  //   }
+  // }, [router]);
 
   const signinMutation = useMutation({
     mutationFn: (data: SigninForm) =>
       api.post("/auth/signin", data).then((res) => res.data),
     onSuccess: (data) => {
       if (data?.data?.token) {
-        localStorage.setItem("access_token", data.data.token);
+        setUserFromToken(data.data.token);
         toast.success("Signed in successfully! Welcome back.");
         router.push("/");
       } else {
