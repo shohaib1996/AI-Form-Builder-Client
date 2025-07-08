@@ -1,82 +1,95 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-import { Chrome, ArrowLeft, Eye, EyeOff } from "lucide-react"
-import Link from "next/link"
-import { ModeToggle } from "@/components/ModeToggle/ModeToggle"
-import { useState, useEffect } from "react"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-import api from "@/lib/axios"
+import { Chrome, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { ModeToggle } from "@/components/ModeToggle/ModeToggle";
+import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 const signinSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(1, "Password is required"),
-})
+});
 
-type SigninForm = z.infer<typeof signinSchema>
+type SigninForm = z.infer<typeof signinSchema>;
 
 export default function SignInPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm<SigninForm>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  })
+  });
 
   // Handle token from URL parameters (for Google OAuth redirect)
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const token = urlParams.get('token')
-    
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
     if (token) {
       // Store the token in localStorage
-      localStorage.setItem('authToken', token)
-      
+      localStorage.setItem("authToken", token);
+
       // Clean up the URL by removing the token parameter
-      window.history.replaceState({}, document.title, window.location.pathname)
-      
+      window.history.replaceState({}, document.title, window.location.pathname);
+
       // Show success message and redirect
-      toast.success("Successfully signed in with Google! Welcome back.")
-      router.push("/")
+      toast.success("Successfully signed in with Google! Welcome back.");
+      router.push("/");
     }
-  }, [router])
+  }, [router]);
 
   const signinMutation = useMutation({
     mutationFn: (data: SigninForm) =>
-      api.post("/auth/signin", data).then(res => res.data),
+      api.post("/auth/signin", data).then((res) => res.data),
     onSuccess: (data) => {
       if (data?.data?.token) {
-        localStorage.setItem("access_token", data.data.token)
-        toast.success("Signed in successfully! Welcome back.")
-        router.push("/")
+        localStorage.setItem("access_token", data.data.token);
+        toast.success("Signed in successfully! Welcome back.");
+        router.push("/");
       } else {
-        toast.error("Signin failed: No token received.")
+        toast.error("Signin failed: No token received.");
       }
     },
     onError: (error: any) => {
       toast.error(
         error?.response?.data?.message ||
-        "An error occurred during signin. Please try again."
-      )
+          "An error occurred during signin. Please try again."
+      );
     },
-  })
+  });
 
   const onSubmit = (data: SigninForm) => {
-    signinMutation.mutate(data)
-  }
+    signinMutation.mutate(data);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -88,7 +101,7 @@ export default function SignInPage() {
         ease: "easeOut" as const,
       },
     },
-  }
+  };
 
   const cardVariants = {
     hover: {
@@ -101,35 +114,37 @@ export default function SignInPage() {
     tap: {
       scale: 0.98,
     },
-  } 
+  };
 
-const handleGoogleLogin = () => {
-  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
-}
-
-
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 dark:from-indigo-900 dark:via-purple-900 dark:to-black flex items-center justify-center p-4 relative">
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4">
-       <ModeToggle/>
+        <ModeToggle />
       </div>
 
       {/* Back Button */}
       <div className="absolute top-4 left-4">
-        <Link href="/">
-          <Button
-            variant="outline"
-            size="icon"
-            className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-0 shadow-lg hover:scale-110 transition-all duration-200"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
+        <Button
+          onClick={() => router.push("/")}
+          variant="outline"
+          size="icon"
+          className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-0 shadow-lg hover:scale-110 transition-all duration-200"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
       </div>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="w-full max-w-md">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-md"
+      >
         <motion.div variants={cardVariants} whileHover="hover" whileTap="tap">
           <Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/90 shadow-2xl border-0">
             <CardHeader className="space-y-1 text-center">
@@ -142,7 +157,10 @@ const handleGoogleLogin = () => {
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
                   <FormField
                     control={form.control}
                     name="email"
@@ -180,9 +198,15 @@ const handleGoogleLogin = () => {
                               tabIndex={-1}
                               className="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                               onClick={() => setShowPassword((v) => !v)}
-                              aria-label={showPassword ? "Hide password" : "Show password"}
+                              aria-label={
+                                showPassword ? "Hide password" : "Show password"
+                              }
                             >
-                              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                              {showPassword ? (
+                                <EyeOff size={18} />
+                              ) : (
+                                <Eye size={18} />
+                              )}
                             </button>
                           </div>
                         </FormControl>
@@ -236,5 +260,5 @@ const handleGoogleLogin = () => {
         </motion.div>
       </motion.div>
     </div>
-  )
+  );
 }
