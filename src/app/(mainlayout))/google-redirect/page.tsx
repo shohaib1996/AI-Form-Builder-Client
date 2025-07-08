@@ -19,7 +19,7 @@ export default function GoogleRedirectPage() {
       window.history.replaceState({}, document.title, window.location.pathname);
       setTimeout(() => router.push("/"), 100);
     } else {
-      toast.error("No token found in URL");
+      // toast.error("No token found in URL");
       router.push("/signin");
     }
   }, [router, setUserFromToken]);
