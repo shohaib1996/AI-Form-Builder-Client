@@ -74,19 +74,20 @@ export function HeroContent({
 
       <motion.div className="max-w-2xl mx-auto" variants={fadeInUp}>
         <div className="flex flex-col items-center sm:flex-row gap-4 p-2 bg-muted rounded-lg">
-          <div className="flex-1 relative">
-            <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+          <div className="flex-1 relative min-w-0">
+            <Globe className="absolute left-3 top-3 text-muted-foreground w-5 h-5 z-10" />
             <Textarea
               placeholder={animatedPlaceholder}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="w-full pl-10 border-0 bg-background h-20 resize-none overflow-y-auto"
+              className="pl-10 border-0 bg-background resize-none h-12 w-full min-w-0 overflow-y-auto"
+              rows={1}
             />
           </div>
           <motion.div {...scaleOnHover}>
             <Button
               size="lg"
-              className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 cursor-pointer"
+              className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 cursor-pointer whitespace-nowrap"
               onClick={() => setIsTitleDialogOpen(true)}
             >
               <Sparkles className="w-5 h-5 mr-2" />
