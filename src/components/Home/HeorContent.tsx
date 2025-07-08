@@ -73,15 +73,23 @@ export function HeroContent({
       </motion.p>
 
       <motion.div className="max-w-2xl mx-auto" variants={fadeInUp}>
-        <div className="flex flex-col items-center sm:flex-row gap-4 p-2 bg-muted rounded-lg">
-          <div className="flex-1 relative min-w-0">
+        <div className="flex flex-col items-stretch sm:flex-row gap-4 p-2 bg-muted rounded-lg">
+          <div className="flex-1 relative min-w-0 sm:min-w-[200px]">
             <Globe className="absolute left-3 top-3 text-muted-foreground w-5 h-5 z-10" />
             <Textarea
               placeholder={animatedPlaceholder}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="pl-10 border-0 bg-background resize-none h-12 w-full min-w-0 overflow-y-auto"
+              className="pl-10 border-0 bg-background resize-none h-12 overflow-y-auto"
               rows={1}
+              style={{ 
+                width: '100%', 
+                minWidth: '0',
+                maxWidth: '100%',
+                flexShrink: 1,
+                flexGrow: 1,
+                boxSizing: 'border-box'
+              }}
             />
           </div>
           <motion.div {...scaleOnHover}>

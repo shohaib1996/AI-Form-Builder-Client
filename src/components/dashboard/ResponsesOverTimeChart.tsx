@@ -27,14 +27,14 @@ const ResponsesOverTimeChart = () => {
 
   if (isLoading) {
     return (
-      <Card className="h-[400px]">
+      <Card className="h-[300px] sm:h-[400px]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
             Responses Over Time
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-[300px]">
+        <CardContent className="flex items-center justify-center h-[200px] sm:h-[300px]">
           <Loader2 className="h-8 w-8 animate-spin text-green-600 dark:text-green-400" />
         </CardContent>
       </Card>
@@ -43,14 +43,14 @@ const ResponsesOverTimeChart = () => {
 
   if (error) {
     return (
-      <Card className="h-[400px]">
+      <Card className="h-[300px] sm:h-[400px]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
             Responses Over Time
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-[300px]">
+        <CardContent className="flex items-center justify-center h-[200px] sm:h-[300px]">
           <div className="text-center">
             <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
             <p className="text-sm text-gray-600 dark:text-gray-400">Failed to load data</p>
@@ -61,7 +61,7 @@ const ResponsesOverTimeChart = () => {
   }
 
   return (
-    <Card className="h-[400px]">
+    <Card className="h-[300px] sm:h-[400px]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -69,7 +69,7 @@ const ResponsesOverTimeChart = () => {
         </CardTitle>
         <CardDescription>Form responses received over time</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-2 sm:p-6 pb-4 sm:pb-8">
         <ChartContainer
           config={{
             count: {
@@ -77,29 +77,31 @@ const ResponsesOverTimeChart = () => {
               color: "hsl(var(--chart-2))",
             },
           }}
-          className="h-[300px]"
+          className="h-[200px] sm:h-[300px] w-full"
         >
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <XAxis dataKey="formattedDate" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis
-                stroke="#888888"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                tickFormatter={(value) => `${value}`}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Line
-                type="monotone"
-                dataKey="count"
-                stroke="var(--color-count)"
-                strokeWidth={3}
-                dot={{ fill: "var(--color-count)", strokeWidth: 2, r: 4 }}
-                className="stroke-green-600 dark:stroke-green-400"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="w-full overflow-hidden">
+            <ResponsiveContainer width="100%" height="100%" minHeight={200}>
+              <LineChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 25 }}>
+                <XAxis dataKey="formattedDate" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `${value}`}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="var(--color-count)"
+                  strokeWidth={3}
+                  dot={{ fill: "var(--color-count)", strokeWidth: 2, r: 4 }}
+                  className="stroke-green-600 dark:stroke-green-400"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </ChartContainer>
       </CardContent>
     </Card>

@@ -23,6 +23,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ModeToggle/ModeToggle";
 import Link from "next/link";
+import { useAuth } from "@/auth/authContext";
 
 const items = [
   {
@@ -77,6 +78,7 @@ function AppSidebarContent() {
 }
 
 export function AppSidebar() {
+  const {logout} = useAuth()
   const router = useRouter();
   return (
     <>
@@ -107,7 +109,7 @@ export function AppSidebar() {
               <Button
                 size="sm"
                 onClick={() => {
-                  localStorage.removeItem("access_token");
+                  logout()
                   router.push("/");
                 }}
                 className="cursor-pointer hover:bg-red-500 text-white bg-red-600"
