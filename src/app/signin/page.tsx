@@ -25,7 +25,7 @@ import {
 import { Chrome, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ModeToggle/ModeToggle";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
