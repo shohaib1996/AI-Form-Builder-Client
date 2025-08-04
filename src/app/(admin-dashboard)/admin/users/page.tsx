@@ -36,6 +36,7 @@ const UsersPage = () => {
         setUsers(response.data)
         setTotal(response.meta.total)
       } catch (error) {
+        console.log(error)
         toast.error("Failed to fetch users.")
       } finally {
         setLoading(false)
