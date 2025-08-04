@@ -3,6 +3,7 @@ import { CTASection } from "@/components/Home/CTASection";
 import { FAQSection } from "@/components/Home/FAQSection";
 import { FeaturesSection } from "@/components/Home/FeaturesSection";
 import { HeroSection } from "@/components/Home/HeroSection";
+import NewsletterSection from "@/components/Home/NewsletterSection";
 
 
 import { TestimonialsSection } from "@/components/Home/TestimonialsSection";
@@ -23,6 +24,7 @@ export default function Home() {
       <TestimonialsSection/>
       <CTASection/>
       <FAQSection/>
+      <NewsletterSection/>
       {/* <Footer/> */}
     </div>
   );
