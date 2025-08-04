@@ -87,7 +87,7 @@ export default function PricingPage() {
     {
       id: "premium",
       name: "Premium",
-      price: "$29",
+      price: "$5",
       priceSubtext: "/month",
       description: "Advanced features for power users and teams",
       features: [
@@ -260,7 +260,7 @@ export default function PricingPage() {
                       <Button
                         onClick={() => (plan.id === "premium" ? handlePayNow(plan.id) : handleGetStarted())}
                         disabled={plan.id === "premium" ? isLoading || checkoutMutation.isPending : false}
-                        className={`w-full py-3 text-base font-medium transition-all duration-200 ${
+                        className={`w-full py-3 text-base font-medium transition-all duration-200 cursor-pointer ${
                           plan.id === "premium"
                             ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl"
                             : "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg hover:shadow-xl"
