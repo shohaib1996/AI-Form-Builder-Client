@@ -51,23 +51,22 @@ export const fetchAdminStats = async () => {
 
 // Fetch all users for User Management Table
 export const fetchAllUsers = async (page: number, limit: number, searchTerm: string = "") => {
-  const response = await api.get(`/users/admin/users`, {
+  const response = await api.get(`/auth/admin/users`, {
     params: { page, limit, searchTerm },
   })
   return response.data
 }
 
 // Update user plan
-export const updateUserPlan = async (userId: string, planType: "normal" | "premium") => {
-  const response = await api.patch(`/auth/admin/update-plan/${userId}`, { planType })
-  return response.data
-}
+export const updateUserPlan = async (userId: string, data: { planType: "normal" | "premium" }) => {
+  const response = await api.patch(`/auth/admin/update-plan/${userId}`, data);
+  return response.data;
+};
 
-// Update user role
-export const updateUserRole = async (userId: string, role: "user" | "admin") => {
-  const response = await api.patch(`/auth/admin/update-role/${userId}`, { role })
-  return response.data
-}
+export const updateUserRole = async (userId: string, data: { role: "user" | "admin" }) => {
+  const response = await api.patch(`/auth/admin/update-role/${userId}`, data);
+  return response.data;
+};
 
 // Fetch all forms for Content Overview Table
 export const fetchAllForms = async (page: number, limit: number, searchTerm: string = "") => {

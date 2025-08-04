@@ -168,7 +168,7 @@ export function AppSidebar() {
                   size="sm"
                   onClick={() => {
                     logout()
-                    router.push("/")
+                    router.push("/signin")
                   }}
                   className="cursor-pointer hover:bg-red-500 text-white bg-red-600"
                 >
