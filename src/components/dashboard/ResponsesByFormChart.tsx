@@ -7,7 +7,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { PieChartIcon, Loader2, AlertCircle, ChevronDown, ChevronUp } from "lucide-react"
 import { dashboardApi } from "@/lib/dashboard-api"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+
 
 interface FormResponseData {
   formName: string
@@ -33,17 +33,17 @@ const COLORS = [
   "#6366f1", // indigo
 ]
 
-const MAX_VISIBLE_FORMS = 8 // Show top 8 forms, group rest as "Others"
+const MAX_VISIBLE_FORMS = 4 // Show only top 4 forms
+const MAX_LEGEND_ITEMS = 4 // Show only 4 items in legend
 
 const ResponsesByFormChart = () => {
-  const [showAllLegend, setShowAllLegend] = useState(false)
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["responses-by-form"],
     queryFn: dashboardApi.getResponsesByForm,
   })
 
-  // Process data to show top forms and group others
+  // Process data to show only top 4 forms and group others
   const processedData = (): ProcessedFormData[] => {
     if (!data || data.length === 0) return []
 
@@ -51,14 +51,14 @@ const ResponsesByFormChart = () => {
     const sortedData = [...data].sort((a, b) => b.count - a.count)
 
     if (sortedData.length <= MAX_VISIBLE_FORMS) {
-      // If we have few forms, show all
+      // If we have 4 or fewer forms, show all
       return sortedData.map((item, index) => ({
         ...item,
         fill: COLORS[index % COLORS.length],
       }))
     }
 
-    // Take top forms and group the rest
+    // Take top 3 forms and group the rest as "Others"
     const topForms = sortedData.slice(0, MAX_VISIBLE_FORMS - 1)
     const otherForms = sortedData.slice(MAX_VISIBLE_FORMS - 1)
     const othersCount = otherForms.reduce((sum, form) => sum + form.count, 0)
@@ -126,13 +126,13 @@ const ResponsesByFormChart = () => {
           Responses by Form
         </CardTitle>
         <CardDescription>
-          Distribution of responses across forms(top 4)
+          Distribution of responses across forms (top 4)
           {data && data.length > MAX_VISIBLE_FORMS && (
-            <span className="text-xs text-gray-500 ml-2">(Showing top {MAX_VISIBLE_FORMS - 1} forms)</span>
+            <span className="text-xs text-gray-500 ml-2">(Showing top {MAX_VISIBLE_FORMS - 1} forms + others)</span>
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent>
         <ChartContainer
           config={{
             count: {
@@ -163,10 +163,10 @@ const ResponsesByFormChart = () => {
           </div>
         </ChartContainer>
 
-        {/* Compact Legend */}
+        {/* Compact Legend - Always show only 4 items max */}
         <div className="mt-2 sm:mt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-xs sm:text-sm">
-            {chartData?.slice(0, showAllLegend ? undefined : 6).map((item) => (
+            {chartData?.slice(0, MAX_LEGEND_ITEMS).map((item) => (
               <div key={item.formName} className="flex items-center gap-2 p-1">
                 <div
                   className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
@@ -179,49 +179,6 @@ const ResponsesByFormChart = () => {
               </div>
             ))}
           </div>
-
-          {/* Show More/Less Button */}
-          {chartData && chartData.length > 6 && (
-            <div className="mt-3 text-center">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAllLegend(!showAllLegend)}
-                className="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
-              >
-                {showAllLegend ? (
-                  <>
-                    <ChevronUp className="h-3 w-3 mr-1" />
-                    Show Less
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="h-3 w-3 mr-1" />
-                    Show All ({chartData.length} items)
-                  </>
-                )}
-              </Button>
-            </div>
-          )}
-
-          {/* Others Breakdown */}
-          {hasOthers && showAllLegend && (
-            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-              <h4 className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">Other Forms Breakdown:</h4>
-              <div className="max-h-32 overflow-y-auto space-y-1">
-                {chartData
-                  .find((item) => item.isOthers)
-                  ?.otherForms?.map((form: FormResponseData, index: number) => (
-                    <div key={index} className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                      <span className="truncate flex-1 mr-2">
-                        {form.formName.length > 25 ? `${form.formName.substring(0, 25)}...` : form.formName}
-                      </span>
-                      <span>{form.count}</span>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

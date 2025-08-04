@@ -208,23 +208,6 @@ export function FAQSection() {
             />
           ))}
         </motion.div>
-
-        <motion.div
-          className="mt-12 text-center relative z-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-muted-foreground mb-4">Still have questions?</p>
-          <motion.button
-            className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 font-semibold underline underline-offset-4 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Contact our support team
-          </motion.button>
-        </motion.div>
       </div>
     </section>
   )
