@@ -18,15 +18,7 @@ interface User {
   responseCount: number
 }
 
-interface UsersResponse {
-  success: boolean
-  data: User[]
-  meta: {
-    page: number
-    limit: number
-    total: number
-  }
-}
+
 
 const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([])
@@ -50,7 +42,7 @@ const UsersPage = () => {
       }
     }
     loadUsers()
-  }, [page, limit, searchTerm])
+  }, [page, limit, searchTerm]) 
 
   const handleUpdatePlan = async (userId: string, currentPlan: "normal" | "premium") => {
     const newPlan = currentPlan === "normal" ? "premium" : "normal"
@@ -59,6 +51,7 @@ const UsersPage = () => {
       setUsers(users.map((user) => (user._id === userId ? { ...user, planType: newPlan } : user)))
       toast.success(`User plan updated to ${newPlan}.`)
     } catch (error) {
+        console.log(error)
       toast.error("Failed to update user plan.")
     }
   }
@@ -70,6 +63,7 @@ const UsersPage = () => {
       setUsers(users.map((user) => (user._id === userId ? { ...user, role: newRole } : user)))
       toast.success(`User role updated to ${newRole}.`)
     } catch (error) {
+        console.log(error)
       toast.error("Failed to update user role.")
     }
   }

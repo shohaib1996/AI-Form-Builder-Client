@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query"
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { PieChartIcon, Loader2, AlertCircle, ChevronDown, ChevronUp } from "lucide-react"
+import { PieChartIcon, Loader2, AlertCircle  } from "lucide-react"
 import { dashboardApi } from "@/lib/dashboard-api"
-import { useState } from "react"
 
 
 interface FormResponseData {
@@ -81,7 +80,6 @@ const ResponsesByFormChart = () => {
   }
 
   const chartData = processedData()
-  const hasOthers = chartData.some((item) => item.isOthers)
 
   if (isLoading) {
     return (

@@ -8,7 +8,7 @@ import Pagination from "@/components/forms/Pagination"
 import { fetchAllForms } from "@/lib/api"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { ClipboardIcon, Copy } from "lucide-react"
+import { Copy } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface Form {
@@ -39,7 +39,6 @@ const FormsManagement = () => {
   const [limit, setLimit] = useState(10)
   const [total, setTotal] = useState(0)
   const [searchTerm, setSearchTerm] = useState("")
-  const router = useRouter()
 
   useEffect(() => {
     const loadForms = async () => {
@@ -49,6 +48,7 @@ const FormsManagement = () => {
         setForms(response.data)
         setTotal(response.meta.total)
       } catch (error) {
+        console.log(error)
         toast.error("Failed to fetch forms.")
       } finally {
         setLoading(false)

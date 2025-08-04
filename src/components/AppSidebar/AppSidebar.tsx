@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { motion } from "framer-motion"
-import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog, Users, Settings } from "lucide-react"
+import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog, Users } from "lucide-react"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import { ModeToggle } from "../ModeToggle/ModeToggle"
