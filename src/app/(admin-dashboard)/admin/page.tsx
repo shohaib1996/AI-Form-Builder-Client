@@ -1,35 +1,39 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { easeOut, motion } from "framer-motion"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Users, Star, FileText, MessageSquare } from "lucide-react"
-import { fetchAdminStats } from "@/lib/api"
+import { useEffect, useState } from "react";
+import { easeOut, motion } from "framer-motion";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Users, Star, FileText, MessageSquare } from "lucide-react";
+import { fetchAdminStats } from "@/lib/api";
+import UserGrowthChart from "@/components/AdminDashboard/UserGrowthChart";
+import PlanDistributionChart from "@/components/AdminDashboard/PlanDistributionChart";
+import FormCreationTrendChart from "@/components/AdminDashboard/FormCreationTrendChart";
+import ResponseSubmissionTrendChart from "@/components/AdminDashboard/ResponseSubmissionTrendChart";
 
 interface AdminStats {
-  totalUsers: number
-  premiumUsers: number
-  totalForms: number
-  totalResponses: number
+  totalUsers: number;
+  premiumUsers: number;
+  totalForms: number;
+  totalResponses: number;
 }
 
 const AdminDashboardPage = () => {
-  const [stats, setStats] = useState<AdminStats | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const data = await fetchAdminStats()
-        setStats(data)
+        const data = await fetchAdminStats();
+        setStats(data);
       } catch (error) {
-        console.error("Failed to fetch admin stats:", error)
+        console.error("Failed to fetch admin stats:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    loadStats()
-  }, [])
+    };
+    loadStats();
+  }, []);
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
@@ -44,7 +48,7 @@ const AdminDashboardPage = () => {
       boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
       transition: { duration: 0.3 },
     },
-  }
+  };
 
   const cards = [
     {
@@ -71,7 +75,7 @@ const AdminDashboardPage = () => {
       icon: MessageSquare,
       description: "Responses submitted",
     },
-  ]
+  ];
 
   return (
     <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 w-full min-w-0 overflow-hidden">
@@ -88,21 +92,33 @@ const AdminDashboardPage = () => {
             <Card className="relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {card.title}
+                </CardTitle>
                 <card.icon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
                   {loading ? "Loading..." : card.value}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {card.description}
+                </p>
               </CardContent>
             </Card>
           </motion.div>
         ))}
       </div>
+      <div className="space-y-6 w-full min-w-0 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <UserGrowthChart />
+          <PlanDistributionChart />
+          <FormCreationTrendChart />
+          <ResponseSubmissionTrendChart />
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminDashboardPage
+export default AdminDashboardPage;
