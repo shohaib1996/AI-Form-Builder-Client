@@ -77,8 +77,11 @@ const UsersPage = () => {
   return (
     <div className="space-y-4 w-full min-w-0 overflow-x-auto">
       {/* Header: Title and Search Bar */}
-      <div className="flex justify-between items-center flex-col sm:flex-row gap-4">
-        <h2 className="text-2xl font-bold text-left w-full sm:w-auto">User Management</h2>
+      <div className="flex justify-between items-baseline lg:items-center flex-col sm:flex-row gap-4">
+        <div className="">
+            <h2 className="text-2xl font-bold text-left w-full sm:w-auto">User Management</h2>
+            <p className="text-sm text-muted-foreground">Total Users: {total}</p>
+        </div>
         <Input
           placeholder="Search by name or email..."
           value={searchTerm}

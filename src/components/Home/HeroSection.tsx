@@ -125,7 +125,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="py-2 px-4 relative overflow-visible">
+    <section id="hero" className="py-2 px-4 relative overflow-visible">
       {/* Corner Blinking Effects */}
       <motion.div
         className="absolute top-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-80"

@@ -70,7 +70,7 @@ export const updateUserRole = async (userId: string, data: { role: "user" | "adm
 
 // Fetch all forms for Content Overview Table
 export const fetchAllForms = async (page: number, limit: number, searchTerm: string = "") => {
-  const response = await api.get(`/forms/admin/all`, {
+  const response = await api.get(`/form/admin/all`, {
     params: { page, limit, searchTerm },
   })
   return response.data

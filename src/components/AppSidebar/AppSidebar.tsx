@@ -61,11 +61,6 @@ const adminItems = [
     url: "/admin/forms",
     icon: FileText,
   },
-  {
-    title: "System Settings",
-    url: "/admin/settings",
-    icon: Settings,
-  },
 ]
 
 // Define maximum form limits based on plan type
@@ -101,18 +96,10 @@ function AppSidebarContent({ isAdmin }: { isAdmin: boolean }) {
 export function AppSidebar() {
   const { logout, user } = useAuth()
   const router = useRouter()
-
-  // Determine if the user is an admin
   const isAdmin = user?.user?.role === "admin"
-
-  // Determine the total maximum forms based on user's plan type (only for non-admin users)
   const userPlanType = user?.user?.planType
   const maxForms = userPlanType === "premium" ? MAX_FORMS_PREMIUM : MAX_FORMS_NORMAL
-
-  // Get the number of forms remaining from the user object
   const formsRemaining = user?.user?.formLimit
-
-  // Only show the progress bar if formsRemaining is a valid number and user is not an admin
   const showProgressBar = !isAdmin && typeof formsRemaining === "number"
 
   let totalFormsCreated = 0
@@ -120,13 +107,13 @@ export function AppSidebar() {
   let formsLeftDisplay = null
 
   if (showProgressBar) {
-    // Calculate total forms created based on maxForms and formsRemaining
+   
     totalFormsCreated = maxForms - formsRemaining!
-    totalFormsCreated = Math.max(0, totalFormsCreated) // Ensure it's not negative
+    totalFormsCreated = Math.max(0, totalFormsCreated) 
 
     formsLeftDisplay = formsRemaining!
     progressValue = (totalFormsCreated / maxForms) * 100
-    progressValue = Math.min(100, Math.max(0, progressValue)) // Ensure progress is between 0 and 100
+    progressValue = Math.min(100, Math.max(0, progressValue)) 
   }
 
   return (
