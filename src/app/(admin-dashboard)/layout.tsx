@@ -17,7 +17,7 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     if (!loading) {
       if (!user || user.user.role !== "admin") {
         toast.error("Access Denied: You must be an administrator to view this page.")
-        router.push("/dashboard") // Redirect to the regular dashboard or sign-in
+        router.push("/signin") // Redirect to the regular dashboard or sign-in
       }
     }
   }, [user, loading, router])
