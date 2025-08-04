@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { motion } from "framer-motion"
-import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog } from "lucide-react"
+import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog, Users, Settings } from "lucide-react"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import { ModeToggle } from "../ModeToggle/ModeToggle"
@@ -20,7 +20,8 @@ import Link from "next/link"
 import { useAuth } from "@/auth/authContext"
 import { Progress } from "@/components/ui/progress"
 
-const items = [
+// Define navigation items for user
+const userItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
@@ -43,11 +44,37 @@ const items = [
   },
 ]
 
+// Define navigation items for admin
+const adminItems = [
+  {
+    title: "Admin Dashboard",
+    url: "/admin",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "User Management",
+    url: "/admin/users",
+    icon: Users,
+  },
+  {
+    title: "Form Management",
+    url: "/admin/forms",
+    icon: FileText,
+  },
+  {
+    title: "System Settings",
+    url: "/admin/settings",
+    icon: Settings,
+  },
+]
+
 // Define maximum form limits based on plan type
 const MAX_FORMS_NORMAL = 20
 const MAX_FORMS_PREMIUM = 500
 
-function AppSidebarContent() {
+function AppSidebarContent({ isAdmin }: { isAdmin: boolean }) {
+  const items = isAdmin ? adminItems : userItems
+
   return (
     <SidebarContent>
       <SidebarGroup>
@@ -75,15 +102,18 @@ export function AppSidebar() {
   const { logout, user } = useAuth()
   const router = useRouter()
 
-  // Determine the total maximum forms based on user's plan type
+  // Determine if the user is an admin
+  const isAdmin = user?.user?.role === "admin"
+
+  // Determine the total maximum forms based on user's plan type (only for non-admin users)
   const userPlanType = user?.user?.planType
   const maxForms = userPlanType === "premium" ? MAX_FORMS_PREMIUM : MAX_FORMS_NORMAL
 
   // Get the number of forms remaining from the user object
   const formsRemaining = user?.user?.formLimit
 
-  // Only show the progress bar if formsRemaining is a valid number
-  const showProgressBar = typeof formsRemaining === "number"
+  // Only show the progress bar if formsRemaining is a valid number and user is not an admin
+  const showProgressBar = !isAdmin && typeof formsRemaining === "number"
 
   let totalFormsCreated = 0
   let progressValue = 0
@@ -117,7 +147,7 @@ export function AppSidebar() {
               </div>
             </Link>
           </SidebarHeader>
-          <AppSidebarContent />
+          <AppSidebarContent isAdmin={isAdmin} />
           <SidebarFooter>
             <div className="flex flex-col gap-2 p-4">
               {showProgressBar && (

@@ -173,7 +173,7 @@ const Navbar = ({
                     <div className="font-semibold">{user.user.name}</div>
                     <div className="text-xs text-muted-foreground">{user.user.email}</div>
                   </div>
-                  <DropdownMenuItem onClick={() => router.push("/dashboard")}>Dashboard</DropdownMenuItem>
+                  {user?.user.role === 'admin' ? <DropdownMenuItem onClick={() => router.push("/admin")}>Dashboard</DropdownMenuItem>: <DropdownMenuItem onClick={() => router.push("/dashboard")}>Dashboard</DropdownMenuItem>}
                   <DropdownMenuItem
                     onClick={() => {
                       logout();
@@ -246,7 +246,7 @@ const Navbar = ({
                         </Avatar>
                         <div className="text-center font-semibold">{user.user.name}</div>
                         <div className="text-xs text-muted-foreground mb-2">{user.user.email}</div>
-                        <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>
+                        {user?.user.role === 'admin' ? <Button onClick={() => router.push("/admin")}>Dashboard</Button>: <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>}
                         <Button
                           variant="outline"
                           onClick={() => {
