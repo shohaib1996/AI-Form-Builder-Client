@@ -1,3 +1,4 @@
+
 import api from "@/lib/axios"
 
 export const resetPassword = async (userId: string, password: string) => {
@@ -37,8 +38,65 @@ export const fetchUserSubscriptions = async () => {
   return response.data.data
 }
 
-// New API call to fetch user info
 export const fetchUserInfo = async () => {
   const response = await api.get("/auth/me")
+  return response.data.data
+}
+
+// Fetch admin dashboard statistics for KPI cards
+export const fetchAdminStats = async () => {
+  const response = await api.get("/dashboard/admin-stats")
+  return response.data.data
+}
+
+// Fetch all users for User Management Table
+export const fetchAllUsers = async (page: number, limit: number, searchTerm: string = "") => {
+  const response = await api.get(`/users/admin/users`, {
+    params: { page, limit, searchTerm },
+  })
+  return response.data
+}
+
+// Update user plan
+export const updateUserPlan = async (userId: string, planType: "normal" | "premium") => {
+  const response = await api.patch(`/auth/admin/update-plan/${userId}`, { planType })
+  return response.data
+}
+
+// Update user role
+export const updateUserRole = async (userId: string, role: "user" | "admin") => {
+  const response = await api.patch(`/auth/admin/update-role/${userId}`, { role })
+  return response.data
+}
+
+// Fetch all forms for Content Overview Table
+export const fetchAllForms = async (page: number, limit: number, searchTerm: string = "") => {
+  const response = await api.get(`/forms/admin/all`, {
+    params: { page, limit, searchTerm },
+  })
+  return response.data
+}
+
+// Fetch user growth data for Line Chart
+export const fetchUserGrowth = async () => {
+  const response = await api.get("/dashboard/admin/user-growth")
+  return response.data.data
+}
+
+// Fetch plan distribution data for Pie Chart
+export const fetchPlanDistribution = async () => {
+  const response = await api.get("/dashboard/admin/plan-distribution")
+  return response.data.data
+}
+
+// Fetch form creation trend data for Bar Chart
+export const fetchFormCreationTrend = async () => {
+  const response = await api.get("/dashboard/admin/form-creation-trend")
+  return response.data.data
+}
+
+// Fetch response submission trend data for Line Chart
+export const fetchResponseSubmissionTrend = async () => {
+  const response = await api.get("/dashboard/admin/response-submission-trend")
   return response.data.data
 }

@@ -1,104 +1,106 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Users, ShapesIcon as Form, BarChart, Settings } from "lucide-react"
+import { useEffect, useState } from "react"
+import { easeOut, motion } from "framer-motion"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Users, Star, FileText, MessageSquare } from "lucide-react"
+import { fetchAdminStats } from "@/lib/api"
+
+interface AdminStats {
+  totalUsers: number
+  premiumUsers: number
+  totalForms: number
+  totalResponses: number
+}
 
 const AdminDashboardPage = () => {
+  const [stats, setStats] = useState<AdminStats | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const data = await fetchAdminStats()
+        setStats(data)
+      } catch (error) {
+        console.error("Failed to fetch admin stats:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadStats()
+  }, [])
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { delay: i * 0.2, duration: 0.5, ease: easeOut },
+    }),
+    hover: {
+      scale: 1.05,
+      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+      transition: { duration: 0.3 },
+    },
+  }
+
+  const cards = [
+    {
+      title: "Total Users",
+      value: stats?.totalUsers ?? 0,
+      icon: Users,
+      description: "All registered users",
+    },
+    {
+      title: "Premium Users",
+      value: stats?.premiumUsers ?? 0,
+      icon: Star,
+      description: "Users on premium plan",
+    },
+    {
+      title: "Total Forms",
+      value: stats?.totalForms ?? 0,
+      icon: FileText,
+      description: "Forms created on platform",
+    },
+    {
+      title: "Total Responses",
+      value: stats?.totalResponses ?? 0,
+      icon: MessageSquare,
+      description: "Responses submitted",
+    },
+  ]
+
   return (
     <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 w-full min-w-0 overflow-hidden">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage users, forms, and system settings</p>
-      </motion.div>
-
-      {/* Admin Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-        >
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,234</div>
-              <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Forms</CardTitle>
-              <Form className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">5,678</div>
-              <p className="text-xs text-muted-foreground">+15.5% from last month</p>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">System Health</CardTitle>
-              <BarChart className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">Operational</div>
-              <p className="text-xs text-muted-foreground">All services running</p>
-            </CardContent>
-          </Card>
-        </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {cards.map((card, index) => (
+          <motion.div
+            key={card.title}
+            custom={index}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            variants={cardVariants}
+          >
+            <Card className="relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+                <card.icon className="h-5 w-5 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {loading ? "Loading..." : card.value}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
       </div>
-
-      {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Perform common administrative tasks.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-center space-x-2">
-              <Settings className="h-5 w-5 text-primary" />
-              <span>Manage Users</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Settings className="h-5 w-5 text-primary" />
-              <span>View Logs</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Settings className="h-5 w-5 text-primary" />
-              <span>System Configuration</span>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
     </div>
   )
 }
