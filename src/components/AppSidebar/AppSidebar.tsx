@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Sidebar,
   SidebarContent,
@@ -10,20 +10,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { motion } from "framer-motion";
-import {
-  Sparkles,
-  FileText,
-  LayoutDashboard,
-  Receipt,
-  UserCog,
-} from "lucide-react";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { ModeToggle } from "../ModeToggle/ModeToggle";
-import Link from "next/link";
-import { useAuth } from "@/auth/authContext";
+} from "@/components/ui/sidebar"
+import { motion } from "framer-motion"
+import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog } from "lucide-react"
+import { Button } from "../ui/button"
+import { useRouter } from "next/navigation"
+import { ModeToggle } from "../ModeToggle/ModeToggle"
+import Link from "next/link"
+import { useAuth } from "@/auth/authContext"
+import { Progress } from "@/components/ui/progress"
 
 const items = [
   {
@@ -36,11 +31,6 @@ const items = [
     url: "/dashboard/forms",
     icon: FileText,
   },
-  //   {
-  //     title: "Payments",
-  //     url: "/dashboard/payments",
-  //     icon: CreditCard,
-  //   },
   {
     title: "Subscriptions & Billing",
     url: "/dashboard/billing",
@@ -51,7 +41,11 @@ const items = [
     url: "/dashboard/profile",
     icon: UserCog,
   },
-];
+]
+
+// Define maximum form limits based on plan type
+const MAX_FORMS_NORMAL = 20
+const MAX_FORMS_PREMIUM = 500
 
 function AppSidebarContent() {
   return (
@@ -74,12 +68,37 @@ function AppSidebarContent() {
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
-  );
+  )
 }
 
 export function AppSidebar() {
-  const {logout} = useAuth()
-  const router = useRouter();
+  const { logout, user } = useAuth()
+  const router = useRouter()
+
+  // Determine the total maximum forms based on user's plan type
+  const userPlanType = user?.user?.planType
+  const maxForms = userPlanType === "premium" ? MAX_FORMS_PREMIUM : MAX_FORMS_NORMAL
+
+  // Get the number of forms remaining from the user object
+  const formsRemaining = user?.user?.formLimit
+
+  // Only show the progress bar if formsRemaining is a valid number
+  const showProgressBar = typeof formsRemaining === "number"
+
+  let totalFormsCreated = 0
+  let progressValue = 0
+  let formsLeftDisplay = null
+
+  if (showProgressBar) {
+    // Calculate total forms created based on maxForms and formsRemaining
+    totalFormsCreated = maxForms - formsRemaining!
+    totalFormsCreated = Math.max(0, totalFormsCreated) // Ensure it's not negative
+
+    formsLeftDisplay = formsRemaining!
+    progressValue = (totalFormsCreated / maxForms) * 100
+    progressValue = Math.min(100, Math.max(0, progressValue)) // Ensure progress is between 0 and 100
+  }
+
   return (
     <>
       <div className="hidden md:block">
@@ -100,26 +119,36 @@ export function AppSidebar() {
           </SidebarHeader>
           <AppSidebarContent />
           <SidebarFooter>
-            <div className="flex items-center justify-between p-4">
-              <span className="text-sm text-muted-foreground font-bold">
-                FormAI
-              </span>
-
-              <ModeToggle />
-              <Button
-                size="sm"
-                onClick={() => {
-                  logout()
-                  router.push("/");
-                }}
-                className="cursor-pointer hover:bg-red-500 text-white bg-red-600"
-              >
-                Log out
-              </Button>
+            <div className="flex flex-col gap-2 p-4">
+              {showProgressBar && (
+                <div className="text-sm text-muted-foreground">
+                  <div className="flex justify-between items-center mb-1">
+                    <span>
+                      Forms Created: {totalFormsCreated} / {maxForms}
+                    </span>
+                    {formsLeftDisplay !== null && <span className="font-medium">{formsLeftDisplay} left</span>}
+                  </div>
+                  <Progress value={progressValue} className="h-2" />
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground font-bold">FormAI</span>
+                <ModeToggle />
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    logout()
+                    router.push("/")
+                  }}
+                  className="cursor-pointer hover:bg-red-500 text-white bg-red-600"
+                >
+                  Log out
+                </Button>
+              </div>
             </div>
           </SidebarFooter>
         </Sidebar>
       </div>
     </>
-  );
+  )
 }

@@ -1,37 +1,41 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect } from "react"
+import type React from "react"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
+import api from "@/lib/axios" // Import your axios instance
 
 interface UserInfo {
-  _id: string;
-  name?: string;
-  planType?: string;
-  role?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  photo?: string;
-  email: string;
+  _id: string
+  name?: string
+  planType?: string // e.g., "normal", "premium"
+  role?: string
+  createdAt?: string
+  updatedAt?: string
+  photo?: string
+  email: string
+  formLimit?: number // This will now represent the number of forms *remaining*
 }
 
 interface DecodedJWT {
-  user: UserInfo;
+  user: UserInfo
 }
 
 function decodeJWT(token: string): DecodedJWT | null {
   try {
-    const payload = token.split('.')[1];
-    const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-    return JSON.parse(decoded);
+    const payload = token.split(".")[1]
+    const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"))
+    return JSON.parse(decoded)
   } catch {
-    return null;
+    return null
   }
 }
 
 interface AuthContextType {
-  user: DecodedJWT | null;
-  setUserFromToken: (token: string) => void;
-  logout: () => void;
-  loading: boolean;
+  user: DecodedJWT | null
+  setUserFromToken: (token: string) => void
+  logout: () => void
+  loading: boolean
+  refetchUser: () => Promise<void> // Added refetchUser function
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -39,6 +43,7 @@ const AuthContext = createContext<AuthContextType>({
   setUserFromToken: () => {},
   logout: () => {},
   loading: true,
+  refetchUser: async () => {}, // Default empty implementation
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -56,7 +61,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null)
   }
 
-  // Always watch token changes (also works for "back" nav)
+  // Function to refetch user info from the backend
+  const refetchUser = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("access_token")
+      if (token) {
+        // Assuming your backend /auth/me endpoint returns the same structure as the decoded JWT payload
+        const res = await api.get("/auth/me")
+        if (res.data.success && res.data.data) {
+          // Update the user state with the new data
+          setUser({ user: res.data.data })
+        }
+      }
+    } catch (error) {
+      console.error("Failed to refetch user info:", error)
+      // Optionally, handle token expiration or other errors by logging out
+      // logout();
+    }
+  }, []) // No dependencies, as it only relies on localStorage and `api`
+
+  // Effect to check token on mount and listen for storage changes
   useEffect(() => {
     const checkToken = () => {
       const token = localStorage.getItem("access_token")
@@ -69,11 +93,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false)
     }
 
-    // Run on first mount
-    checkToken()
+    checkToken() // Run on first mount
 
-    // Also listen for storage events (if multiple tabs)
-    window.addEventListener("storage", checkToken)
+    window.addEventListener("storage", checkToken) // Listen for storage events
 
     return () => {
       window.removeEventListener("storage", checkToken)
@@ -81,7 +103,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUserFromToken, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUserFromToken, logout, loading, refetchUser }}>
       {children}
     </AuthContext.Provider>
   )
