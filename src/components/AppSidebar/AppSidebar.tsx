@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Sidebar,
   SidebarContent,
@@ -10,15 +10,22 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { motion } from "framer-motion"
-import { Sparkles, FileText, LayoutDashboard, Receipt, UserCog, Users } from "lucide-react"
-import { Button } from "../ui/button"
-import { useRouter } from "next/navigation"
-import { ModeToggle } from "../ModeToggle/ModeToggle"
-import Link from "next/link"
-import { useAuth } from "@/auth/authContext"
-import { Progress } from "@/components/ui/progress"
+} from "@/components/ui/sidebar";
+import { motion } from "framer-motion";
+import {
+  Sparkles,
+  FileText,
+  LayoutDashboard,
+  Receipt,
+  UserCog,
+  Users,
+} from "lucide-react";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { ModeToggle } from "../ModeToggle/ModeToggle";
+import Link from "next/link";
+import { useAuth } from "@/auth/authContext";
+import { Progress } from "@/components/ui/progress";
 
 // Define navigation items for user
 const userItems = [
@@ -42,7 +49,7 @@ const userItems = [
     url: "/dashboard/profile",
     icon: UserCog,
   },
-]
+];
 
 // Define navigation items for admin
 const adminItems = [
@@ -61,14 +68,14 @@ const adminItems = [
     url: "/admin/forms",
     icon: FileText,
   },
-]
+];
 
 // Define maximum form limits based on plan type
-const MAX_FORMS_NORMAL = 20
-const MAX_FORMS_PREMIUM = 500
+const MAX_FORMS_NORMAL = 20;
+const MAX_FORMS_PREMIUM = 500;
 
 function AppSidebarContent({ isAdmin }: { isAdmin: boolean }) {
-  const items = isAdmin ? adminItems : userItems
+  const items = isAdmin ? adminItems : userItems;
 
   return (
     <SidebarContent>
@@ -90,30 +97,30 @@ function AppSidebarContent({ isAdmin }: { isAdmin: boolean }) {
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
-  )
+  );
 }
 
 export function AppSidebar() {
-  const { logout, user } = useAuth()
-  const router = useRouter()
-  const isAdmin = user?.user?.role === "admin"
-  const userPlanType = user?.user?.planType
-  const maxForms = userPlanType === "premium" ? MAX_FORMS_PREMIUM : MAX_FORMS_NORMAL
-  const formsRemaining = user?.user?.formLimit
-  const showProgressBar = !isAdmin && typeof formsRemaining === "number"
+  const { logout, user } = useAuth();
+  const router = useRouter();
+  const isAdmin = user?.user?.role === "admin";
+  const userPlanType = user?.user?.planType;
+  const maxForms =
+    userPlanType === "premium" ? MAX_FORMS_PREMIUM : MAX_FORMS_NORMAL;
+  const formsRemaining = user?.user?.formLimit;
+  const showProgressBar = !isAdmin && typeof formsRemaining === "number";
 
-  let totalFormsCreated = 0
-  let progressValue = 0
-  let formsLeftDisplay = null
+  let totalFormsCreated = 0;
+  let progressValue = 0;
+  let formsLeftDisplay = null;
 
   if (showProgressBar) {
-   
-    totalFormsCreated = maxForms - formsRemaining!
-    totalFormsCreated = Math.max(0, totalFormsCreated) 
+    totalFormsCreated = maxForms - formsRemaining!;
+    totalFormsCreated = Math.max(0, totalFormsCreated);
 
-    formsLeftDisplay = formsRemaining!
-    progressValue = (totalFormsCreated / maxForms) * 100
-    progressValue = Math.min(100, Math.max(0, progressValue)) 
+    formsLeftDisplay = formsRemaining!;
+    progressValue = (totalFormsCreated / maxForms) * 100;
+    progressValue = Math.min(100, Math.max(0, progressValue));
   }
 
   return (
@@ -130,7 +137,10 @@ export function AppSidebar() {
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-                <span className="text-xl font-bold">AIFormGenerator</span>
+                <div className="flex flex-col items-center mt-2">
+                  <span className="text-lg font-bold leading-2">AIForm</span>
+                  <span className="text-lg font-bold">Generator</span>
+                </div>
               </div>
             </Link>
           </SidebarHeader>
@@ -143,19 +153,26 @@ export function AppSidebar() {
                     <span>
                       Forms Created: {totalFormsCreated} / {maxForms}
                     </span>
-                    {formsLeftDisplay !== null && <span className="font-medium">{formsLeftDisplay} left</span>}
+                    {formsLeftDisplay !== null && (
+                      <span className="font-medium">
+                        {formsLeftDisplay} left
+                      </span>
+                    )}
                   </div>
                   <Progress value={progressValue} className="h-2" />
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground font-bold">AIFormGenerator</span>
+                <div className="flex flex-col items-center mt-2">
+                  <span className="text-lg font-bold leading-2">AIForm</span>
+                  <span className="text-lg font-bold">Generator</span>
+                </div>
                 <ModeToggle />
                 <Button
                   size="sm"
                   onClick={() => {
-                    logout()
-                    router.push("/signin")
+                    logout();
+                    router.push("/signin");
                   }}
                   className="cursor-pointer hover:bg-red-500 text-white bg-red-600"
                 >
@@ -167,5 +184,5 @@ export function AppSidebar() {
         </Sidebar>
       </div>
     </>
-  )
+  );
 }
