@@ -140,19 +140,21 @@ const Navbar = ({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="flex items-center space-x-2">
-                <motion.div
-                  className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Sparkles className="w-5 h-5 text-white" />
-                </motion.div>
-                <div className="flex flex-col items-center mt-2">
-                  <span className="text-lg font-bold leading-2">AIForm</span>
-                  <span className="text-lg font-bold">Generator</span>
+              <Link href="/">
+                <div className="flex items-center space-x-2">
+                  <motion.div
+                    className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </motion.div>
+                  <div className="flex flex-col items-center mt-2">
+                    <span className="text-lg font-bold leading-2">AIForm</span>
+                    <span className="text-lg font-bold">Generator</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
             <NavigationMenu>
               <NavigationMenuList>
