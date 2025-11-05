@@ -130,7 +130,7 @@ export function AppSidebar() {
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-                <span className="text-xl font-bold">FormAI</span>
+                <span className="text-xl font-bold">AIFormGenerator</span>
               </div>
             </Link>
           </SidebarHeader>
@@ -149,7 +149,7 @@ export function AppSidebar() {
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground font-bold">FormAI</span>
+                <span className="text-sm text-muted-foreground font-bold">AIFormGenerator</span>
                 <ModeToggle />
                 <Button
                   size="sm"

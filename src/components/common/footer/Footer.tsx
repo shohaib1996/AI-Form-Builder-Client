@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Sparkles } from "lucide-react"
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 
 const footerSections = [
   {
@@ -31,14 +31,18 @@ const footerSections = [
       { name: "Status", href: "#" },
     ],
   },
-]
+];
 
 export function Footer() {
   return (
     <footer className="py-12 px-4 border-t bg-muted/30">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-4 gap-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
             <div className="flex items-center space-x-2 mb-4">
               <motion.div
                 className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
@@ -47,10 +51,14 @@ export function Footer() {
               >
                 <Sparkles className="w-5 h-5 text-white" />
               </motion.div>
-              <span className="text-xl font-bold">FormAI</span>
+              <div className="flex flex-col items-center mt-2">
+                <span className="text-lg font-bold leading-2">AIForm</span>
+                <span className="text-lg font-bold">Generator</span>
+              </div>
             </div>
             <p className="text-muted-foreground">
-              The future of form building is here. Create intelligent forms with the power of AI.
+              The future of form building is here. Create intelligent forms with
+              the power of AI.
             </p>
           </motion.div>
 
@@ -87,9 +95,9 @@ export function Footer() {
           transition={{ delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p>&copy; 2025 FormAI. All rights reserved.</p>
+          <p>&copy; 2025 AIFormGenerator. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>
-  )
+  );
 }

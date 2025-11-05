@@ -68,7 +68,8 @@ const Navbar = ({
         },
         {
           title: "Support",
-          description: "Get in touch with our support team or visit our community forums",
+          description:
+            "Get in touch with our support team or visit our community forums",
           icon: <Zap className="size-5 shrink-0" />,
           url: "/support",
         },
@@ -134,7 +135,11 @@ const Navbar = ({
         {/* Desktop */}
         <nav className="hidden justify-between lg:flex relative z-60 w-full">
           <div className="flex items-center gap-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
               <div className="flex items-center space-x-2">
                 <motion.div
                   className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
@@ -143,7 +148,10 @@ const Navbar = ({
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-                <span className="text-xl font-bold">FormAI</span>
+                <div className="flex flex-col items-center mt-2">
+                  <span className="text-lg font-bold leading-2">AIForm</span>
+                  <span className="text-lg font-bold">Generator</span>
+                </div>
               </div>
             </motion.div>
             <NavigationMenu>
@@ -160,10 +168,16 @@ const Navbar = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
-                    <AvatarImage src={user.user.photo || "https://github.com/shadcn.png"} />
+                    <AvatarImage
+                      src={user.user.photo || "https://github.com/shadcn.png"}
+                    />
                     <AvatarFallback>
                       {user.user.name
-                        ? user.user.name.split(" ").map((n) => n[0]).join("").toUpperCase()
+                        ? user.user.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()
                         : "US"}
                     </AvatarFallback>
                   </Avatar>
@@ -171,9 +185,19 @@ const Navbar = ({
                 <DropdownMenuContent align="end" className="w-48">
                   <div className="px-3 py-2">
                     <div className="font-semibold">{user.user.name}</div>
-                    <div className="text-xs text-muted-foreground">{user.user.email}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {user.user.email}
+                    </div>
                   </div>
-                  {user?.user.role === 'admin' ? <DropdownMenuItem onClick={() => router.push("/admin")}>Dashboard</DropdownMenuItem>: <DropdownMenuItem onClick={() => router.push("/dashboard")}>Dashboard</DropdownMenuItem>}
+                  {user?.user.role === "admin" ? (
+                    <DropdownMenuItem onClick={() => router.push("/admin")}>
+                      Dashboard
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                      Dashboard
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     onClick={() => {
                       logout();
@@ -202,7 +226,11 @@ const Navbar = ({
         {/* Mobile */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
               <div className="flex items-center space-x-2">
                 <motion.div
                   className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
@@ -211,7 +239,7 @@ const Navbar = ({
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
-                <span className="text-xl font-bold">FormAI</span>
+                <span className="text-xl font-bold">AIFormGenerator</span>
               </div>
             </motion.div>
             <Sheet>
@@ -227,7 +255,11 @@ const Navbar = ({
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
-                  <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="flex w-full flex-col gap-4"
+                  >
                     {menu.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
@@ -237,16 +269,36 @@ const Navbar = ({
                     ) : user ? (
                       <div className="flex flex-col items-center space-y-3">
                         <Avatar className="mb-2">
-                          <AvatarImage src={user.user.photo || "https://github.com/shadcn.png"} />
+                          <AvatarImage
+                            src={
+                              user.user.photo || "https://github.com/shadcn.png"
+                            }
+                          />
                           <AvatarFallback>
                             {user.user.name
-                              ? user.user.name.split(" ").map((n) => n[0]).join("").toUpperCase()
+                              ? user.user.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")
+                                  .toUpperCase()
                               : "US"}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="text-center font-semibold">{user.user.name}</div>
-                        <div className="text-xs text-muted-foreground mb-2">{user.user.email}</div>
-                        {user?.user.role === 'admin' ? <Button onClick={() => router.push("/admin")}>Dashboard</Button>: <Button onClick={() => router.push("/dashboard")}>Dashboard</Button>}
+                        <div className="text-center font-semibold">
+                          {user.user.name}
+                        </div>
+                        <div className="text-xs text-muted-foreground mb-2">
+                          {user.user.email}
+                        </div>
+                        {user?.user.role === "admin" ? (
+                          <Button onClick={() => router.push("/admin")}>
+                            Dashboard
+                          </Button>
+                        ) : (
+                          <Button onClick={() => router.push("/dashboard")}>
+                            Dashboard
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
                           onClick={() => {
@@ -264,7 +316,9 @@ const Navbar = ({
                           <Link href={auth.login.url}>{auth.login.title}</Link>
                         </Button>
                         <Button asChild>
-                          <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                          <Link href={auth.signup.url}>
+                            {auth.signup.title}
+                          </Link>
                         </Button>
                       </>
                     )}
@@ -283,7 +337,9 @@ const renderMenuItem = (item: MenuItem) => {
   if (item.items) {
     return (
       <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger className="bg-transparent">{item.title}</NavigationMenuTrigger>
+        <NavigationMenuTrigger className="bg-transparent">
+          {item.title}
+        </NavigationMenuTrigger>
         <NavigationMenuContent className="bg-background text-foreground p-2 min-w-[300px]">
           {item.items.map((subItem) => (
             <NavigationMenuLink asChild key={subItem.title}>
@@ -338,7 +394,9 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
       <div>
         <div className="text-sm font-semibold">{item.title}</div>
         {item.description && (
-          <p className="text-sm leading-snug text-muted-foreground">{item.description}</p>
+          <p className="text-sm leading-snug text-muted-foreground">
+            {item.description}
+          </p>
         )}
       </div>
     </a>
