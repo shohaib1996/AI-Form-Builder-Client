@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { Suspense, useEffect, useRef, useState } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
-import { useQuery } from "@tanstack/react-query"
-import { motion } from "framer-motion"
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import {
   CheckCircle,
   Download,
@@ -15,44 +15,46 @@ import {
   Loader2,
   AlertCircle,
   Receipt,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import api from "@/lib/axios"
-import { toast } from "sonner"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import api from "@/lib/axios";
+import { toast } from "sonner";
 
 interface PaymentCompleteResponse {
-  success: boolean
-  message: string
+  success: boolean;
+  message: string;
   subscription: {
-    planName: string
-    status: string
-    startedAt: string
-    endsAt: string
-    stripeSubscriptionId: string
-  }
+    planName: string;
+    status: string;
+    startedAt: string;
+    endsAt: string;
+    stripeSubscriptionId: string;
+  };
 }
 
 function CompletePageContent() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const receiptRef = useRef<HTMLDivElement>(null)
-  const [isDownloading, setIsDownloading] = useState(false)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const receiptRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const sessionId = searchParams.get("session_id")
+  const sessionId = searchParams.get("session_id");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["payment-complete", sessionId],
     queryFn: async () => {
-      if (!sessionId) throw new Error("No session ID provided")
-      const response = await api.get<PaymentCompleteResponse>(`/payment/complete?session_id=${sessionId}`)
-      return response.data
+      if (!sessionId) throw new Error("No session ID provided");
+      const response = await api.get<PaymentCompleteResponse>(
+        `/payment/complete?session_id=${sessionId}`
+      );
+      return response.data;
     },
     enabled: !!sessionId,
     retry: false,
-  })
+  });
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -61,36 +63,38 @@ function CompletePageContent() {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   const getPlanDisplayName = (planName: string) => {
-    return planName.charAt(0).toUpperCase() + planName.slice(1)
-  }
+    return planName.charAt(0).toUpperCase() + planName.slice(1);
+  };
 
   const getPlanPrice = (planName: string) => {
-    return planName.toLowerCase() === "premium" ? "5.00" : "Free"
-  }
+    return planName.toLowerCase() === "premium" ? "5.00" : "Free";
+  };
 
   const downloadReceipt = async () => {
-    if (!receiptRef.current || !data) return
+    if (!receiptRef.current || !data) return;
 
-    setIsDownloading(true)
+    setIsDownloading(true);
 
     try {
-      const printWindow = window.open("", "_blank")
+      const printWindow = window.open("", "_blank");
       if (!printWindow) {
-        throw new Error("Popup blocked")
+        throw new Error("Popup blocked");
       }
 
-      const subscription = data.subscription
+      const subscription = data.subscription;
 
       const receiptHTML = `
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
-            <title>Payment Receipt - ${subscription.stripeSubscriptionId.slice(-8).toUpperCase()}</title>
+            <title>Payment Receipt - ${subscription.stripeSubscriptionId
+              .slice(-8)
+              .toUpperCase()}</title>
             <style>
               @media print {
                 body { margin: 0; }
@@ -271,7 +275,9 @@ function CompletePageContent() {
 
             <div class="header">
               <h1>🧾 Payment Receipt</h1>
-              <p>Receipt #${subscription.stripeSubscriptionId.slice(-8).toUpperCase()}</p>
+              <p>Receipt #${subscription.stripeSubscriptionId
+                .slice(-8)
+                .toUpperCase()}</p>
             </div>
 
             <div class="receipt-grid">
@@ -279,7 +285,9 @@ function CompletePageContent() {
                 <h3>👤 Subscription Details</h3>
                 <div class="detail-row">
                   <span class="detail-label">Plan:</span>
-                  <span class="detail-value">${getPlanDisplayName(subscription.planName)}</span>
+                  <span class="detail-value">${getPlanDisplayName(
+                    subscription.planName
+                  )}</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Status:</span>
@@ -287,7 +295,9 @@ function CompletePageContent() {
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Amount:</span>
-                  <span class="detail-value amount">${getPlanPrice(subscription.planName)}</span>
+                  <span class="detail-value amount">${getPlanPrice(
+                    subscription.planName
+                  )}</span>
                 </div>
               </div>
 
@@ -299,11 +309,15 @@ function CompletePageContent() {
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Transaction ID:</span>
-                  <span class="detail-value" style="font-family: monospace; font-size: 12px;">${subscription.stripeSubscriptionId.slice(-12)}</span>
+                  <span class="detail-value" style="font-family: monospace; font-size: 12px;">${subscription.stripeSubscriptionId.slice(
+                    -12
+                  )}</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Payment Date:</span>
-                  <span class="detail-value">${formatDate(subscription.startedAt)}</span>
+                  <span class="detail-value">${formatDate(
+                    subscription.startedAt
+                  )}</span>
                 </div>
               </div>
             </div>
@@ -313,15 +327,21 @@ function CompletePageContent() {
               <div class="billing-period">
                 <div class="detail-row">
                   <span class="detail-label">Started:</span>
-                  <span class="detail-value">${formatDate(subscription.startedAt)}</span>
+                  <span class="detail-value">${formatDate(
+                    subscription.startedAt
+                  )}</span>
                 </div>
                 <div class="detail-row">
                   <span class="detail-label">Ends:</span>
-                  <span class="detail-value">${formatDate(subscription.endsAt)}</span>
+                  <span class="detail-value">${formatDate(
+                    subscription.endsAt
+                  )}</span>
                 </div>
               </div>
               <p style="text-align: center; color: #64748b; font-size: 14px; margin: 10px 0 0 0;">
-                Your subscription will auto-renew on <strong>${new Date(subscription.endsAt).toLocaleDateString()}</strong>
+                Your subscription will auto-renew on <strong>${new Date(
+                  subscription.endsAt
+                ).toLocaleDateString()}</strong>
               </p>
             </div>
 
@@ -378,28 +398,28 @@ function CompletePageContent() {
             </script>
           </body>
         </html>
-      `
+      `;
 
-      printWindow.document.write(receiptHTML)
-      printWindow.document.close()
+      printWindow.document.write(receiptHTML);
+      printWindow.document.close();
 
-      toast.success("Receipt opened in new window. Use Print to save as PDF!")
+      toast.success("Receipt opened in new window. Use Print to save as PDF!");
     } catch (error) {
-      console.error("Error generating receipt:", error)
-      toast.error("Failed to generate receipt. Please try again.")
+      console.error("Error generating receipt:", error);
+      toast.error("Failed to generate receipt. Please try again.");
     } finally {
-      setIsDownloading(false)
+      setIsDownloading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (!sessionId) {
-      router.push("/pricing")
+      router.push("/pricing");
     }
-  }, [sessionId, router])
+  }, [sessionId, router]);
 
   if (!sessionId) {
-    return null
+    return null;
   }
 
   if (isLoading) {
@@ -413,16 +433,24 @@ function CompletePageContent() {
         >
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+            transition={{
+              duration: 2,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
             className="inline-block mb-4"
           >
             <Loader2 className="h-12 w-12 text-green-600 dark:text-green-400" />
           </motion.div>
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Processing Payment</h2>
-          <p className="text-gray-600 dark:text-gray-400">Please wait while we confirm your payment...</p>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            Processing Payment
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Please wait while we confirm your payment...
+          </p>
         </motion.div>
       </div>
-    )
+    );
   }
 
   if (error || !data?.success) {
@@ -444,21 +472,28 @@ function CompletePageContent() {
               >
                 <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
               </motion.div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">Payment Verification Failed</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                Payment Verification Failed
+              </h1>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We couldn&apos;t verify your payment. Please contact support if you believe this is an error.
+                We couldn&apos;t verify your payment. Please contact support if
+                you believe this is an error.
               </p>
-              <Button onClick={() => router.push("/pricing")} variant="outline" className="w-full">
+              <Button
+                onClick={() => router.push("/pricing")}
+                variant="outline"
+                className="w-full"
+              >
                 Back to Pricing
               </Button>
             </CardContent>
           </Card>
         </motion.div>
       </div>
-    )
+    );
   }
 
-  const subscription = data.subscription
+  const subscription = data.subscription;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-gray-900 dark:via-green-900/10 dark:to-gray-900 py-8 px-4">
@@ -472,7 +507,12 @@ function CompletePageContent() {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6, type: "spring", bounce: 0.6 }}
+            transition={{
+              delay: 0.2,
+              duration: 0.6,
+              type: "spring",
+              bounce: 0.6,
+            }}
             className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mb-6 shadow-lg"
           >
             <CheckCircle className="h-10 w-10 text-white" />
@@ -510,16 +550,23 @@ function CompletePageContent() {
           transition={{ delay: 0.7, duration: 0.6 }}
           className="mb-8"
         >
-          <Card ref={receiptRef} className="bg-white dark:bg-gray-800 shadow-xl border-0 overflow-hidden">
+          <Card
+            ref={receiptRef}
+            className="bg-white dark:bg-gray-800 shadow-xl border-0 overflow-hidden"
+          >
             <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Receipt className="h-6 w-6" />
-                  <CardTitle className="text-2xl font-bold">Payment Receipt</CardTitle>
+                  <CardTitle className="text-2xl font-bold">
+                    Payment Receipt
+                  </CardTitle>
                 </div>
                 <div className="text-right">
                   <p className="text-blue-100 text-sm">Receipt #</p>
-                  <p className="font-mono text-sm">{subscription.stripeSubscriptionId.slice(-8).toUpperCase()}</p>
+                  <p className="font-mono text-sm">
+                    {subscription.stripeSubscriptionId.slice(-8).toUpperCase()}
+                  </p>
                 </div>
               </div>
             </CardHeader>
@@ -529,28 +576,33 @@ function CompletePageContent() {
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                       <User className="h-5 w-5" />
-                     
-
-System: Subscription Details
+                      System: Subscription Details
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Plan:</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Plan:
+                        </span>
                         <span className="font-semibold text-gray-900 dark:text-gray-100">
                           {getPlanDisplayName(subscription.planName)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Status:</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Status:
+                        </span>
                         <Badge
                           variant="outline"
                           className="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800"
                         >
-                          {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+                          {subscription.status.charAt(0).toUpperCase() +
+                            subscription.status.slice(1)}
                         </Badge>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Amount:</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Amount:
+                        </span>
                         <span className="font-bold text-xl text-gray-900 dark:text-gray-100">
                           {getPlanPrice(subscription.planName)}
                         </span>
@@ -565,11 +617,17 @@ System: Subscription Details
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Payment Method:</span>
-                        <span className="text-gray-900 dark:text-gray-100">Stripe</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Payment Method:
+                        </span>
+                        <span className="text-gray-900 dark:text-gray-100">
+                          Stripe
+                        </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Transaction ID:</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Transaction ID:
+                        </span>
                         <span className="font-mono text-sm text-gray-900 dark:text-gray-100">
                           {subscription.stripeSubscriptionId.slice(-12)}
                         </span>
@@ -585,12 +643,20 @@ System: Subscription Details
                     </h3>
                     <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Started:</span>
-                        <span className="text-gray-900 dark:text-gray-100">{formatDate(subscription.startedAt)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Started:
+                        </span>
+                        <span className="text-gray-900 dark:text-gray-100">
+                          {formatDate(subscription.startedAt)}
+                        </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-400">Ends:</span>
-                        <span className="text-gray-900 dark:text-gray-100">{formatDate(subscription.endsAt)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Ends:
+                        </span>
+                        <span className="text-gray-900 dark:text-gray-100">
+                          {formatDate(subscription.endsAt)}
+                        </span>
                       </div>
                       <Separator />
                       <div className="text-center">
@@ -604,7 +670,9 @@ System: Subscription Details
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">What&apos;s Included</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                      What&apos;s Included
+                    </h3>
                     <div className="space-y-2">
                       {subscription.planName.toLowerCase() === "premium" ? (
                         <>
@@ -647,8 +715,13 @@ System: Subscription Details
               </div>
               <Separator className="my-8" />
               <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                <p>Thank you for your business! If you have any questions, please contact our support team.</p>
-                <p className="mt-1">Generated on {formatDate(new Date().toISOString())}</p>
+                <p>
+                  Thank you for your business! If you have any questions, please
+                  contact our support team.
+                </p>
+                <p className="mt-1">
+                  Generated on {formatDate(new Date().toISOString())}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -694,12 +767,13 @@ System: Subscription Details
           className="text-center mt-8"
         >
           <p className="text-gray-600 dark:text-gray-400">
-            🎉 Welcome to {getPlanDisplayName(subscription.planName)}! Start building amazing forms today.
+            🎉 Welcome to {getPlanDisplayName(subscription.planName)}! Start
+            building amazing forms today.
           </p>
         </motion.div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function CompletePage() {
@@ -715,20 +789,28 @@ export default function CompletePage() {
           >
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              transition={{
+                duration: 2,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              }}
               className="inline-block mb-4"
             >
               <Loader2 className="h-12 w-12 text-green-600 dark:text-green-400" />
             </motion.div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Loading...</h2>
-            <p className="text-gray-600 dark:text-gray-400">Please wait while we load your payment details...</p>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              Loading...
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Please wait while we load your payment details...
+            </p>
           </motion.div>
         </div>
       }
     >
       <CompletePageContent />
     </Suspense>
-  )
+  );
 }
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";

@@ -164,8 +164,8 @@ export function AppSidebar() {
               )}
               <div className="flex items-center justify-between">
                 <div className="flex flex-col items-center mt-2">
-                  <span className="text-lg font-bold leading-2">AIForm</span>
-                  <span className="text-lg font-bold">Generator</span>
+                  <span className="text-sm font-bold leading-2">AIForm</span>
+                  <span className="text-sm font-bold">Generator</span>
                 </div>
                 <ModeToggle />
                 <Button
