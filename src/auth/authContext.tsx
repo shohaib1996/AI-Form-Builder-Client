@@ -50,11 +50,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<DecodedJWT | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const setUserFromToken = (token: string) => {
+  const setUserFromToken = useCallback((token: string) => {
     localStorage.setItem("access_token", token)
     const decoded = decodeJWT(token)
     setUser(decoded)
-  }
+  }, [])
 
   const logout = () => {
     localStorage.removeItem("access_token")
