@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Home from "./home";
+import HomeWrapper from "./HomeWrapper";
 
 export const metadata: Metadata = {
   title: "AI Form Builder | Create Custom Forms with AI",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Home />;
+  return <HomeWrapper />;
 }
