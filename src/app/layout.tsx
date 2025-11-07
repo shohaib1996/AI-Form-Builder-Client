@@ -18,14 +18,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AI Form Generator: Create Custom Forms with AI in Seconds",
-  description: "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
-  keywords: ["AI form builder", "online form generator", "custom forms", "AI forms", "survey builder", "quiz maker", "form automation", "natural language forms"],
+  description:
+    "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
+  keywords: [
+    "AI form builder",
+    "online form generator",
+    "custom forms",
+    "AI forms",
+    "survey builder",
+    "quiz maker",
+    "form automation",
+    "natural language forms",
+  ],
   icons: {
-    icon: '/favicon.png',
+    icon: "/favicon.png",
   },
   openGraph: {
     title: "AI Form Builder: Create Custom Forms with AI in Seconds",
-    description: "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
+    description:
+      "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
     url: "https://aiformbuilder.com",
     siteName: "AI Form Builder",
     images: [
@@ -42,8 +53,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "AI Form Builder: Create Custom Forms with AI in Seconds",
-    description: "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
-    images: ["https://res.cloudinary.com/dsn66l0iv/image/upload/v1762440335/Untitled_1200_x_630_px_h5petq.png"], // Replace with your actual Twitter image
+    description:
+      "Build powerful, custom forms for your business with our AI-powered form builder. Create job applications, surveys, and more with natural language.",
+    images: [
+      "https://res.cloudinary.com/dsn66l0iv/image/upload/v1762440335/Untitled_1200_x_630_px_h5petq.png",
+    ], // Replace with your actual Twitter image
   },
 };
 
@@ -64,7 +78,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <main className="min-h-screen">{children}</main>
+            </AuthProvider>
             <Toaster />
           </Providers>
         </ThemeProvider>
