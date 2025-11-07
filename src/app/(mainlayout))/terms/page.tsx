@@ -2,7 +2,14 @@
 
 import { motion } from "framer-motion"
 import { Book, Shield, Users, AlertTriangle, CheckCircle, Scale } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | AI Form Builder",
+  description: "Our terms and conditions for using our services. Please read carefully to understand your rights and responsibilities.",
+};
 
 export default function TermsPage() {
   const sections = [
@@ -88,6 +95,7 @@ export default function TermsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-indigo-900/10 dark:to-gray-900">
+      <SchemaMarkup />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-400/5 dark:to-pink-400/5" />

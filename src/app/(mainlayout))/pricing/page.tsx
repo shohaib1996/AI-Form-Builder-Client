@@ -11,11 +11,18 @@ import api from "@/lib/axios"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/auth/authContext"
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
 
 interface CheckoutResponse {
   success: boolean
   url: string
 }
+
+export const metadata: Metadata = {
+  title: "Pricing Plans | AI Form Builder",
+  description: "Choose the perfect plan for your needs. Get started for free or unlock advanced features with our premium plan.",
+};
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
@@ -111,6 +118,7 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 py-16 px-4">
+      <SchemaMarkup />
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div

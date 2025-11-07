@@ -19,6 +19,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
+
+export const metadata: Metadata = {
+  title: "Contact Us | AI Form Builder",
+  description: "We are here to help you with any questions you have. Reach out and we'll respond as soon as possible.",
+};
 
 export default function ContactPage() {
   const form = useRef<HTMLFormElement>(null);
@@ -82,6 +89,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-orange-900/10 dark:to-gray-900">
+      <SchemaMarkup />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-400/5 dark:to-pink-400/5" />

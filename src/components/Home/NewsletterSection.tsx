@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("")
@@ -59,9 +60,9 @@ export default function NewsletterSection() {
             </form>
             <p className="text-xs text-muted">
               By subscribing, you agree to our{" "}
-              <a className="underline underline-offset-2" href="#">
+              <Link className="underline underline-offset-2" href="/terms">
                 Privacy Policy
-              </a>
+              </Link>
               .
             </p>
           </div>

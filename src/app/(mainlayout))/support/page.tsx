@@ -4,7 +4,14 @@ import { motion } from "framer-motion"
 import { Zap, MessageCircle, Book, Video, ArrowRight, Users, Clock, CheckCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
+
+export const metadata: Metadata = {
+  title: "Support | AI Form Builder",
+  description: "Get in touch with our support team or visit our community forums for help and guidance.",
+};
 
 export default function SupportPage() {
   const supportOptions = [
@@ -74,6 +81,7 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-blue-900/10 dark:to-gray-900">
+      <SchemaMarkup />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-400/5 dark:to-pink-400/5" />

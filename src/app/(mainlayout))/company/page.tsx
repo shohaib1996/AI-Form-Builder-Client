@@ -4,6 +4,13 @@ import { motion } from "framer-motion"
 import { Trees, Users, Target, Award, ArrowRight, Sparkles } from 'lucide-react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
+
+export const metadata: Metadata = {
+  title: "Our Mission | AI Form Builder",
+  description: "Learn about the mission, values, and story of AI Form Builder. We are dedicated to making form building accessible, intuitive, and powerful for creators everywhere.",
+};
 
 export default function CompanyPage() {
   const values = [
@@ -38,6 +45,7 @@ export default function CompanyPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 dark:from-gray-900 dark:via-emerald-900/10 dark:to-gray-900">
+      <SchemaMarkup />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-400/5 dark:to-pink-400/5" />

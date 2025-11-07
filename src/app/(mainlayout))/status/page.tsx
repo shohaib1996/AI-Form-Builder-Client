@@ -15,7 +15,14 @@ import {
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "@/components/ui/progress";
+import type { Metadata } from "next";
+import SchemaMarkup from "./SchemaMarkup";
+
+export const metadata: Metadata = {
+  title: "System Status | AI Form Builder",
+  description: "Check the current status of our services and APIs in real-time. Get insights into uptime, response time, and recent incidents.",
+};
 
 export default function StatusPage() {
   const overallStatus = "operational" // operational, degraded, outage
@@ -132,6 +139,7 @@ export default function StatusPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-gray-900 dark:via-green-900/10 dark:to-gray-900">
+      <SchemaMarkup />
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 dark:from-purple-400/5 dark:to-pink-400/5" />
