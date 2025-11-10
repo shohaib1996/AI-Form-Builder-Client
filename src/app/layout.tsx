@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/auth/authContext";
 import { setupPostHog } from "@/lib/posthog";
 import { CSPostHogProvider } from "./CSPostHogProvider";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,14 +81,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CSPostHogProvider>
-            <Providers>
-              <AuthProvider>
-                <main className="min-h-screen">{children}</main>
-              </AuthProvider>
-              <Toaster />
-            </Providers>
-          </CSPostHogProvider>
+          <Suspense fallback={null}>
+            <CSPostHogProvider>
+              <Providers>
+                <AuthProvider>
+                  <main className="min-h-screen">{children}</main>
+                </AuthProvider>
+                <Toaster />
+              </Providers>
+            </CSPostHogProvider>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
