@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/ThemeProvider/theme-provider";
 import Providers from "./Providers";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/auth/authContext";
+import { setupPostHog } from "@/lib/posthog";
+import { CSPostHogProvider } from "./CSPostHogProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,6 +68,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  setupPostHog();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -77,12 +80,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Providers>
-            <AuthProvider>
-              <main className="min-h-screen">{children}</main>
-            </AuthProvider>
-            <Toaster />
-          </Providers>
+          <CSPostHogProvider>
+            <Providers>
+              <AuthProvider>
+                <main className="min-h-screen">{children}</main>
+              </AuthProvider>
+              <Toaster />
+            </Providers>
+          </CSPostHogProvider>
         </ThemeProvider>
       </body>
     </html>
