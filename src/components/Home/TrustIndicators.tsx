@@ -7,27 +7,27 @@ import Marquee from "react-fast-marquee";
 const companies = [
   {
     name: "Toptal",
-    logo: "https://formester.com/_nuxt/image/15ea59.svg",
+    logo: "https://www.vectorlogo.zone/logos/toptal/toptal-icon.svg",
   },
   {
     name: "Grab",
-    logo: "https://formester.com/_nuxt/image/beb948.svg",
+    logo: "https://cdn.worldvectorlogo.com/logos/grab.svg",
   },
   {
     name: "IOLANI School",
-    logo: "https://formester.com/_nuxt/image/d67fc8.svg",
+    logo: "https://gw-advance-prod-us-east-1-system.s3.amazonaws.com/uploads/menu_bar/main_logo/6007a03c260c000067a7ef3e/_Iolani_Shield_Headlogo_300x300_v2.png",
   },
   {
     name: "Aramark",
-    logo: "https://formester.com/_nuxt/image/1057c3.svg",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Aramark_logo.svg",
   },
   {
     name: "Austin Community College",
-    logo: "https://formester.com/_nuxt/image/a376c5.svg",
+    logo: "https://offices.austincc.edu/college-relations-and-marketing/wp-content/uploads/sites/2/2022/08/ACC-District-Color-Logo-PNG.png",
   },
   {
     name: "Peabody Energy",
-    logo: "https://formester.com/_nuxt/image/5aa3fc.svg",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Peabody_Energy_Logo.svg",
   },
 ];
 
@@ -59,6 +59,7 @@ export function TrustIndicators() {
                 alt={company.name}
                 width={250}
                 height={250}
+                className="invert-75"
               />
             </motion.div>
           ))}
